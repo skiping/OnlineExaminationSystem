@@ -1,0 +1,50 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>在线考试系统后台</title>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <environment names="Development">
+        <link href="~/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="~/css/font-awesome.css" rel="stylesheet" />
+        <link href="~/js/plugins/layer/skin/default/layer.css" rel="stylesheet" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <partial name="Menu.cshtml" />
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        @RenderBody()
+        <!--右侧部分结束-->
+    </div>
+
+    <environment names="Development">
+        <script src="~/js/jquery.js"></script>
+        <script src="~/js/bootstrap.js"></script>
+        <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/js/plugins/slimscroll/jquery.slimscroll.js"></script>
+        <script src="~/js/jucheap.js"></script>
+        <script src="~/js/contabs.js"></script>
+        <script src="~/js/vue.js"></script>
+        <script src="~/js/vue-component.min.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+    <script src="~/js/plugins/layer/layer.js"></script>
+</body>
+</html>

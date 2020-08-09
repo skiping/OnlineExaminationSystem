@@ -1,0 +1,272 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Localizer["Title"]</title>
+    <link rel='stylesheet' id='font-awesome-fa-css' href='~/css/font-awesome.css' type='text/css' media='all' />
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <script src="~/js/base.js"></script>
+    <script src="~/js/vue.js"></script>
+</head>
+
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Roboto !important;
+    }
+
+    #wrap {
+        min-height: 100vh;
+        height: 100%;
+        width: 100%;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/login-bg.jpg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center center;
+        background-color: #eee;
+        position: relative;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    .logGet {
+        height: 408px;
+        width: 368px;
+        background-color: rgba(0,0,0,0.5);
+        margin: auto auto;
+    }
+
+    .logC input {
+        width: 100%;
+        height: 45px;
+        background-color: #ee7700;
+        border: none;
+        color: white;
+        font-size: 18px;
+    }
+
+        .logC input:hover {
+            width: 100%;
+            height: 45px;
+            background-color: #ff5f12;
+            border: none;
+            color: white;
+            font-size: 18px;
+        }
+
+
+    .logGet .logD.logDtip .p1 {
+        display: inline-block;
+        font-size: 28px;
+        margin-top: 30px;
+        width: 86%;
+    }
+
+    .logGet .logD.logDtip {
+        width: 86%;
+        border-bottom: 1px solid #ee7700;
+        margin-bottom: 60px;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .logGet .logC {
+        width: 86%;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+    }
+
+    #head {
+        padding-top: 20px;
+        height: 90px;
+        width: 100%;
+        background-color: rgba(0,0,0,0.5);
+        text-align: center;
+    }
+
+    .title {
+        color: #FFFFFF;
+        font-size: 36px;
+        height: 40px;
+    }
+
+    .slogan {
+        height: 100%;
+        color: #f9f9f9;
+        font-size: 42px;
+        font-family: "Open Sans";
+        font-weight: 700;
+        line-height: 70px;
+    }
+
+    .login-box {
+        border-radius: 0 !important;
+    }
+
+
+    @@media screen and (min-width: 1280px) {
+        .login-container {
+            padding-top: 100px;
+        }
+
+        .slogan {
+            padding-top: 100px;
+        }
+    }
+
+    @@media screen and (min-width: 769px) and (max-width: 1280px) {
+        .login-container {
+            padding-top: 50px;
+        }
+
+        .slogan {
+            padding: 20px 0 0 50px;
+            font-size: 36px;
+        }
+    }
+
+    @@media screen and (max-width: 768px) {
+        .login-container {
+            padding-top: 50px;
+        }
+
+        .slogan {
+            padding: 50px 0 20px 100px;
+            font-size: 36px;
+        }
+    }
+
+    @@media screen and (max-width: 600px) {
+        .login-container {
+            padding-top: 50px;
+        }
+
+        .slogan {
+            font-size: 22px;
+            line-height: 50px;
+            padding: 0;
+        }
+    }
+
+    .register {
+        padding: 10px 10px;
+        text-align: center;
+        color: #fff !important;
+    }
+</style>
+
+<body>
+    <div id="wrap">
+        <div class="header" id="head">
+            <div class="title">
+                @Localizer["Online Examination System"]
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row" style="min-height: 80vh">
+                <div class="col-md-7">
+                    <div class="slogan">
+                        <i>
+                            <span style="color: rgb(208, 157, 80)">@Localizer["Welcome"]</span> <br />
+                            <span style="padding-left:50px;color: rgb(208, 157, 80)">@Localizer["To"]</span><br />
+                            <span style="padding-left: 100px; color: rgb(208, 157, 80) "></span>@Localizer["Online Examination System"]
+                        </i>
+                    </div>
+                </div>
+                <div class="col-md-5 login-container">
+                    <div class="logGet">
+                        <!-- 头部提示信息 -->
+                        <div class="logD logDtip" style="color: #f9f9f9">
+                            <p class="p1">@Localizer["Title"]</p>
+                        </div>
+
+                        <div style="width: 368px; padding:0 26px 30px 26px;border-radius: 0 !important;">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon login-box">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                </span>
+                                <input class="form-control login-box" placeholder='@Localizer["UserName"]'
+                                       autofocus v-model="userName">
+                            </div>
+                            <div class="input-group input-group-lg" style="margin-top: 30px">
+                                <span class="input-group-addon login-box">
+                                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                </span>
+                                <input id="txtPassword" type="password" class="form-control login-box"
+                                       v-model="password" placeholder='@Localizer["Password"]'>
+                            </div>
+
+                        </div>
+
+
+                        <div class="logC">
+                            <input type="button" value='@Localizer["Title"]' @@click="login()" />
+                        </div>
+
+                        <div class="register"><a href="/Home/Register" style="color: #fff">@Localizer["Register"]</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_Partial_Language")
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: "#wrap",
+            data: {
+                userName: '',
+                password: '',
+            },
+            methods: {
+                login() {
+
+                    if (!this.userName || !this.password) {
+                        alert('@Localizer["User name or password required"]');
+                        return;
+                    }
+
+                    var params = `name=${this.userName}&password=${this.password}&type=2`;
+                    _fetch("/Home/Login?" + params, "POST").then(res => {
+                        if (res.result == true) {
+                            if (res.role == 1) {
+                                location.href = "/Home/Index";
+                            }
+                            else {
+                                location.href = "/Home/Goods";
+                            }
+                        }
+                        else {
+                            alert('@Localizer["User name or password invalid"]');
+                        }
+                    });
+
+                },
+
+                register() {
+                    location.href = "/Home/Register";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
