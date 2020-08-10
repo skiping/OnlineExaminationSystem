@@ -1,6 +1,6 @@
 using System;
 
-namespace OnlineExaminationSystem.Models
+namespace OnlineExaminationSystem.Web.Models
 {
     public class ErrorViewModel
     {

@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="row border-bottom">
         <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -11,7 +13,7 @@
                     @User.Identity.Name
                 </li>
                 <li class="hidden-xs">
-                    <a href="@Url.Action("Logout")"><i class="fa fa fa-sign-out"></i> 退出</a>
+                    <a href="@Url.Action("Logout")"><i class="fa fa fa-sign-out"></i> @ShareLocalizer["Exit"]</a>
                 </li>
             </ul>
         </nav>
@@ -22,7 +24,8 @@
         </button>
         <nav class="page-tabs J_menuTabs">
             <div class="page-tabs-content">
-                <a href="javascript:;" class="active J_menuTab" data-id="@Url.Action("Welcome")">首页</a>
+                <a href="javascript:;" class="active J_menuTab" data-id="@Url.Action("Welcome")">
+                @ShareLocalizer["Home"]</a>
             </div>
         </nav>
         <button class="roll-nav roll-right J_tabRight">
@@ -30,28 +33,30 @@
         </button>
         <div class="btn-group roll-nav roll-right">
             <button class="dropdown J_tabClose" data-toggle="dropdown">
-                关闭操作<span class="caret"></span>
+                @ShareLocalizer["Options"]<span class="caret"></span>
             </button>
             <ul role="menu" class="dropdown-menu dropdown-menu-right">
                 <li class="J_tabShowActive">
-                    <a>定位当前选项卡</a>
+                    <a>@ShareLocalizer["Lock Current Tab"]</a>
                 </li>
                 <li class="divider"></li>
                 <li class="J_tabCloseAll">
-                    <a>关闭全部选项卡</a>
+                    <a>@ShareLocalizer["Close All Tabs"]</a>
                 </li>
                 <li class="J_tabCloseOther">
-                    <a>关闭其他选项卡</a>
+                    <a>@ShareLocalizer["Close Other Tabs"]</a>
                 </li>
             </ul>
         </div>
     </div>
     <div class="row J_mainContent" id="content-main">
-        <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="@Url.Action("OrderList", "Order")" frameborder="0" data-id="@Url.Action("Welcome")" seamless></iframe>
+        <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="@Url.Action("Index", "Admin")" frameborder="0" data-id="@Url.Action("Welcome")" seamless></iframe>
     </div>
     <div class="footer">
-        <div class="pull-right">
-            &copy; 2020 <a href="#" target="_blank">&copy;Food Ordering</a>
+        <div class="text-center">
+            &copy; 2020 <a href="#" target="_blank">&copy;@ShareLocalizer["Online Examination"]</a>
+
+            <div class="pull-right">@await Html.PartialAsync("_Partial_Language")</div>
         </div>
     </div>
 </div>

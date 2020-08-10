@@ -1,4 +1,9 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> SharedLocalizer
+
+
 @{
     Layout = null;
 }
@@ -11,5 +16,6 @@
     <title>Index</title>
 </head>
 <body>
+    @SharedLocalizer["Add"] qq
 </body>
 </html>

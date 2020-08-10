@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OnlineExaminationSystem.Models;
 using OnlineExaminationSystem.DAL;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -16,8 +15,9 @@ using OnlineExaminationSystem.Utility;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using OnlineExaminationSystem.BLL.Service;
+using OnlineExaminationSystem.Web.Models;
 
-namespace OnlineExaminationSystem.Controllers
+namespace OnlineExaminationSystem.Web.Controllers
 {
     public class HomeController : Controller
     {

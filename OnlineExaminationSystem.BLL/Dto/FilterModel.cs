@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnlineExaminationSystem.Models
+namespace OnlineExaminationSystem.BLL.Dto
 {
     public class FilterModel
     {

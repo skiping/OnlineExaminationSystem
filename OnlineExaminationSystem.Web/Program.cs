@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace OnlineExaminationSystem
+namespace OnlineExaminationSystem.Web
 {
     public class Program
     {

@@ -15,8 +15,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
 using OnlineExaminationSystem.BLL.Service;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
-namespace OnlineExaminationSystem
+namespace OnlineExaminationSystem.Web
 {
     public class Startup
     {
@@ -53,11 +55,14 @@ namespace OnlineExaminationSystem
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options => { options.LoginPath = "/Home/Login"; options.AccessDeniedPath = "/NoRight.cshtml"; });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Db")));
 
             services.AddScoped<UserService>();
+            services.AddScoped<SubjectService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

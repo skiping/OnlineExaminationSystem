@@ -1,0 +1,235 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "Suject List";
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
+}
+
+<style>
+    .esf-window .esf-window-container .esf-window-header {
+        background: #2A3F54;
+    }
+</style>
+
+<div class="wrapper wrapper-content" id="app">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@Localizer["Sbuject List"]</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group">
+                <button type="button" class="btn btn-primary " @@click="addSubject()">
+                    <i class="fa fa-plus"></i>&nbsp;@ShareLocalizer["Add"]
+                </button>
+                <button type="button" class="btn btn-info" @@click="editSubject()">
+                    <i class="fa fa-pencil"></i> @ShareLocalizer["Edit"]
+                </button>
+                <button type="button" class="btn btn-danger" @@click="deleteSubject()">
+                    <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                </button>
+            </div>
+
+            <div class="jqGrid_wrapper">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["Title"]</th>
+                            <th>@ShareLocalizer["Description"]</th>
+                            <th>@ShareLocalizer["Create Time"]</th>
+                            <th>@ShareLocalizer["Update Time"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in tableData">
+                            <td><input type="checkbox" v-model="item.checked" /></td>
+                            <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + 1}}</td>
+                            <td>{{item.title}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.createTime | dateFormat}}</td>
+                            <td>{{item.updateTime | dateFormat}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize" @@input="pageChange()"></pagination>
+            </div>
+
+            <window-modal ref="addWin" :width="'600'">
+                <template slot="header">
+                    {{editType}}@ShareLocalizer["Subject"]
+                </template>
+                <template slot="body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Title"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Title" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Description"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Description" />
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="submitSubject()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeWin()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+
+            pagerOpt: {
+                pageSize: 10,
+                page: 1,
+                total: 0,
+            },
+
+            model: {
+                Id: 0,
+                Title: "",
+                Description: ""
+            },
+
+            editType: '@ShareLocalizer["Add"]',
+            backup: ""
+        },
+        mounted() {
+            this.getData();
+        },
+        methods: {
+            getData() {
+                var params = `pageNo=${this.pagerOpt.page}&pageSize=${this.pagerOpt.pageSize}`
+                _fetch("/Admin/GetSubjects?" + params, "GET").then(res => {
+                    if (res.status = true) {
+
+                        res.data.result.filter(x => {
+                            x.checked = false;
+                            x.isEdit = false;
+                        });
+                        this.tableData = res.data.result;
+                        this.pagerOpt.total = res.data.total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            addSubject() {
+                this.editType = "@ShareLocalizer["Add"]";
+                this.$refs.addWin.show();
+            },
+
+            closeWin() {
+                this.model = {
+                    Id: 0,
+                    Title: "",
+                    Description: ""
+                };
+
+                this.$refs.addWin.close();
+            },
+
+            submitSubject() {
+                if (!this.model.Title || !this.model.Description) {
+                    alert('@Localizer["Title or description required"]')
+                    return;
+                }
+
+                var params = `id=${this.model.Id}&title=${this.model.Title}&description=${this.model.Description}`
+                _fetch(`/Admin/AddSubject?${params}`, "POST").then(res => {
+                    if (res.status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.closeWin();
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            afterUploaded(res) {
+                if (res.success == true) {
+                    this.model.ImgUrl = res.fileName;
+                }
+                else {
+                    alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                }
+            },
+
+            editSubject() {
+                var ids = [];
+                this.tableData.filter(v => {
+                    if (v.checked) {
+                        ids.push(v.id);
+                    }
+                });
+
+                if (ids.length == 0 || ids.length > 1) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                var item = this.tableData.find(x => x.id == ids[0]);
+                this.editType = '@ShareLocalizer["Edit"]';
+
+                this.model = {
+                    Id: item.id,
+                    Title: item.title,
+                    Description: item.description,
+                };
+                this.$refs.addWin.show();
+            },
+
+            deleteSubject() {
+                var ids = [];
+                this.tableData.forEach(function (v) {
+                    if (v.checked) {
+                        ids.push(v.id);
+                    }
+                });
+                if (ids.length == 0) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                _fetch(`/Admin/DeleteSubject?id=${ids[0]}`, "DELETE").then(res => {
+                    if (res.status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            pageChange() {
+                this.getData();
+            }
+        }
+    });
+</script>
+
