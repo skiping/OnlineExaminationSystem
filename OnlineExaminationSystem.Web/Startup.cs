@@ -17,6 +17,8 @@ using Microsoft.Extensions.Options;
 using OnlineExaminationSystem.BLL.Service;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace OnlineExaminationSystem.Web
 {
@@ -37,8 +39,7 @@ namespace OnlineExaminationSystem.Web
                 o.ResourcesPath = "Resources";
             });
             services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
             var supportedCultures = new[]
             {
@@ -55,7 +56,11 @@ namespace OnlineExaminationSystem.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options => { options.LoginPath = "/Home/Login"; options.AccessDeniedPath = "/NoRight.cshtml"; });
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
 
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
@@ -63,6 +68,9 @@ namespace OnlineExaminationSystem.Web
 
             services.AddScoped<UserService>();
             services.AddScoped<SubjectService>();
+            services.AddScoped<QuestionService>();
+            services.AddScoped<ExaminationRuleService>();
+            services.AddScoped<ExaminationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

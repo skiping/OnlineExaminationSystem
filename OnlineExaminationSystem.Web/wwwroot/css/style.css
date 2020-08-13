@@ -5638,3 +5638,8 @@ body.fixed-sidebar.mini-navbar .navbar-static-side {
 .mini-navbar .sidebar-footer a {
     width: 100%;
 }
+
+.ql-editor img {
+	width: 100px;
+	height: 100px;
+}

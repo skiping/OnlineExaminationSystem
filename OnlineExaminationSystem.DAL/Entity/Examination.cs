@@ -10,7 +10,8 @@ namespace OnlineExaminationSystem.DAL.Entity
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int SujectId { get; set; }
+        public int SubjectId { get; set; }
+        public int Score { get; set; }
         public int Time { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }

@@ -12,7 +12,7 @@ namespace OnlineExaminationSystem.DAL.Entity
         public string Title { get; set; }
         public string Content { get; set; }
         public int TypeId { get; set; }
-        public int SubjeceId { get; set; }
+        public int SubjectId { get; set; }
         public string OptionA { get; set; }
         public string OptionB { get; set; }
         public string OptionC { get; set; }

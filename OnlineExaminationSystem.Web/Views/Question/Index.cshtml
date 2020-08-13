@@ -1,0 +1,332 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "Question";
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
+}
+
+<style>
+    .esf-window .esf-window-container .esf-window-header {
+        background: #2A3F54;
+    }
+</style>
+
+<div class="wrapper wrapper-content" id="app">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@ShareLocalizer["Question List"]</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group">
+                <input type="text" class="form-control input-sm" 
+                       style="width: 20%; display: inline-block" v-model="keyword" />
+                <button type="button" class="btn btn-default " @@click="getData()">
+                    <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                </button>
+                
+                <button type="button" class="btn btn-primary " @@click="addSubject()">
+                    <i class="fa fa-plus"></i>&nbsp;@ShareLocalizer["Add"]
+                </button>
+                <button type="button" class="btn btn-info" @@click="editSubject()">
+                    <i class="fa fa-pencil"></i> @ShareLocalizer["Edit"]
+                </button>
+                <button type="button" class="btn btn-danger" @@click="deleteSubject()">
+                    <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                </button>
+            </div>
+
+            <div class="jqGrid_wrapper">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["Subject"]</th>
+                            <th>@ShareLocalizer["QuestionType"]</th>
+                            <th>@ShareLocalizer["Description"]</th>
+                            <th>@ShareLocalizer["Score"]</th>
+                            <th>@ShareLocalizer["Difficulty"]</th>
+                            <th>@ShareLocalizer["Update Time"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in tableData">
+                            <td><input type="checkbox" v-model="item.checked" /></td>
+                            <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
+                            <td>{{item.Subject}}</td>
+                            <td>{{item.QuestionType}}</td>
+                            <td>{{item.CleanContent}}</td>
+                            <td>{{item.Score}}</td>
+                            <td>{{item.DifficultyDegree}}</td>
+                            <td>{{item.UpdateTime | dateFormat}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize" @@input="pageChange()"></pagination>
+            </div>
+
+            <window-modal ref="addWin" :width="'1000'">
+                <template slot="header">
+                    {{editType}}@ShareLocalizer["Question"]
+                </template>
+                <template slot="body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["QuestionType"]:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control input-sm" v-model="model.TypeId">
+                                    <option value="1">@ShareLocalizer["Choice"]</option>
+                                    <option value="3">@ShareLocalizer["Fill"]</option>
+                                    <option value="2">@ShareLocalizer["Judgment"]</option>
+                                    <option value="4">@ShareLocalizer["Q&A"]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Subject"]:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control input-sm" v-model="model.SubjectId">
+                                    <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Difficulty"]:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control input-sm" v-model="model.DifficultyDegree">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Score"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Score" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Question Content"]:</label>
+                            <div class="col-sm-9">
+                                <div>
+                                    <quill-editor v-model="model.Content" :options="editorOption" />
+                                </div>
+                                <div v-if="model.TypeId == 3">@ShareLocalizer["Fill Note"]</div>
+                            </div>
+                        </div>
+
+                        <template v-if="model.TypeId == 1">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option A"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionA" :options="editorOption" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option B"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionB" :options="editorOption" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option C"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionC" :options="editorOption" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option D"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionD" :options="editorOption" />
+                                </div>
+                            </div>
+                        </template>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Answer"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Answer" />
+                            </div>
+                            <div class="col-sm-5">
+                                @ShareLocalizer["Answer Note"]
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="submitQuestion()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeWin()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    Vue.use(window.VueQuillEditor)
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+            subjects: [],
+
+            pagerOpt: {
+                pageSize: 10,
+                page: 1,
+                total: 0,
+            },
+
+            model: {
+                TypeId: 1,
+                SubjectId: 1,
+                Content: ''
+            },
+
+            editType: '@ShareLocalizer["Add"]',
+            backup: "",
+            keyword: "",
+
+            content: null,
+            editorOption: {}
+        },
+        mounted() {
+            this.getData();
+            this.getSubjec();
+        },
+        methods: {
+            getData() {
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`;
+                _fetch("/Question/GetQuestions?" + params, "GET").then(res => {
+                    if (res.Status = true) {
+
+                        res.Data.Result.filter(x => {
+                            x.checked = false;
+                            x.isEdit = false;
+                        });
+                        this.tableData = res.Data.Result;
+                        this.pagerOpt.total = res.Data.Total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            getSubjec() {
+                _fetch("/Admin/GetSubjects", "GET").then(res => {
+                    if (res.Status = true) {
+                        this.subjects = res.Data.Result;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            addSubject() {
+                this.model.TypeId = 1;
+                this.model.SubjectId = 1;
+                this.editType = "@ShareLocalizer["Add"]";
+                this.$refs.addWin.show();
+            },
+
+            closeWin() {
+                this.model = {};
+                this.model.TypeId = 1;
+                this.model.SubjectId = 1;
+                this.model.Content = "";
+
+                this.$refs.addWin.close();
+            },
+
+            submitQuestion() {
+                if (!this.validData()) {
+                    alert('@ShareLocalizer["Fields Required"]')
+                    return;
+                }
+
+                _fetch(`/Question/AddQuestion`, "POST", this.model).then(res => {
+                    if (res.status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.closeWin();
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            validData() {
+                if (this.model.TypeId == 1) {
+                    return this.model.TypeId && this.model.SubjectId && this.model.Content && this.model.Score &&
+                        this.model.DifficultyDegree && this.model.OptionA && this.model.OptionB &&
+                        this.model.OptionC && this.model.OptionD && this.model.Answer;
+                }
+                else {
+                     return this.model.TypeId && this.model.SubjectId && this.model.Content && this.model.Score &&
+                        this.model.DifficultyDegree && this.model.Answer;
+                }
+            },
+
+            editSubject() {
+                var ids = [];
+                this.tableData.filter(v => {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+
+                if (ids.length == 0 || ids.length > 1) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                var item = this.tableData.find(x => x.Id == ids[0]);
+                this.editType = '@ShareLocalizer["Edit"]';
+
+                this.model = $.extend(true, {}, item);
+                this.$refs.addWin.show();
+            },
+
+            deleteSubject() {
+                var ids = [];
+                this.tableData.forEach(function (v) {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+                if (ids.length == 0) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                _fetch(`/Question/DeleteQuestion?id=${ids[0]}`, "DELETE").then(res => {
+                    if (res.status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            pageChange() {
+                this.getData();
+            }
+        }
+    });
+</script>
+

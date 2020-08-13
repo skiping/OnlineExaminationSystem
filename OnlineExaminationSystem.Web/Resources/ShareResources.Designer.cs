@@ -79,11 +79,47 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 答案.
+        /// </summary>
+        public static string Answer {
+            get {
+                return ResourceManager.GetString("Answer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 注: 多个项以|分隔.
+        /// </summary>
+        public static string Answer_Note {
+            get {
+                return ResourceManager.GetString("Answer Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 取消.
         /// </summary>
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择题.
+        /// </summary>
+        public static string Choice {
+            get {
+                return ResourceManager.GetString("Choice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择题数量.
+        /// </summary>
+        public static string Choice_Count {
+            get {
+                return ResourceManager.GetString("Choice Count", resourceCulture);
             }
         }
         
@@ -133,6 +169,15 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 难度.
+        /// </summary>
+        public static string Difficulty {
+            get {
+                return ResourceManager.GetString("Difficulty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 编辑.
         /// </summary>
         public static string Edit {
@@ -151,11 +196,56 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 考试时长.
+        /// </summary>
+        public static string Examination_Time {
+            get {
+                return ResourceManager.GetString("Examination Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 退出.
         /// </summary>
         public static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 请完成所有项的输入.
+        /// </summary>
+        public static string Fields_Required {
+            get {
+                return ResourceManager.GetString("Fields Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 填空题.
+        /// </summary>
+        public static string Fill {
+            get {
+                return ResourceManager.GetString("Fill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 填空题数量.
+        /// </summary>
+        public static string Fill_Count {
+            get {
+                return ResourceManager.GetString("Fill Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 注：填空题空格用（）表示.
+        /// </summary>
+        public static string Fill_Note {
+            get {
+                return ResourceManager.GetString("Fill Note", resourceCulture);
             }
         }
         
@@ -169,11 +259,38 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 判断题.
+        /// </summary>
+        public static string Judgment {
+            get {
+                return ResourceManager.GetString("Judgment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 判断题数量.
+        /// </summary>
+        public static string Judgment_Count {
+            get {
+                return ResourceManager.GetString("Judgment Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 定位当前选项卡.
         /// </summary>
         public static string Lock_Current_Tab {
             get {
                 return ResourceManager.GetString("Lock Current Tab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 手动添加.
+        /// </summary>
+        public static string Mannual_Add {
+            get {
+                return ResourceManager.GetString("Mannual Add", resourceCulture);
             }
         }
         
@@ -196,11 +313,56 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 选项A .
+        /// </summary>
+        public static string Option_A {
+            get {
+                return ResourceManager.GetString("Option A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选项B.
+        /// </summary>
+        public static string Option_B {
+            get {
+                return ResourceManager.GetString("Option B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选项C.
+        /// </summary>
+        public static string Option_C {
+            get {
+                return ResourceManager.GetString("Option C", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选项D.
+        /// </summary>
+        public static string Option_D {
+            get {
+                return ResourceManager.GetString("Option D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 关闭操作.
         /// </summary>
         public static string Options {
             get {
                 return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 试卷.
+        /// </summary>
+        public static string Paper {
+            get {
+                return ResourceManager.GetString("Paper", resourceCulture);
             }
         }
         
@@ -232,7 +394,43 @@ namespace OnlineExaminationSystem.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 题目列表.
+        ///   Looks up a localized string similar to 问答题.
+        /// </summary>
+        public static string Q_A {
+            get {
+                return ResourceManager.GetString("Q&A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 问答题数量.
+        /// </summary>
+        public static string Q_A_Count {
+            get {
+                return ResourceManager.GetString("Q&A Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题目.
+        /// </summary>
+        public static string Question {
+            get {
+                return ResourceManager.GetString("Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题干.
+        /// </summary>
+        public static string Question_Content {
+            get {
+                return ResourceManager.GetString("Question Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题库.
         /// </summary>
         public static string Question_List {
             get {
@@ -246,6 +444,60 @@ namespace OnlineExaminationSystem.Web.Resources {
         public static string Questions_Management {
             get {
                 return ResourceManager.GetString("Questions Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 题型.
+        /// </summary>
+        public static string QuestionType {
+            get {
+                return ResourceManager.GetString("QuestionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 根据规则自动添加.
+        /// </summary>
+        public static string Rule_Add {
+            get {
+                return ResourceManager.GetString("Rule Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 试卷规则列表.
+        /// </summary>
+        public static string Rule_List {
+            get {
+                return ResourceManager.GetString("Rule List", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 分数.
+        /// </summary>
+        public static string Score {
+            get {
+                return ResourceManager.GetString("Score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 搜索.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 选择试卷规则.
+        /// </summary>
+        public static string Select_Rule {
+            get {
+                return ResourceManager.GetString("Select Rule", resourceCulture);
             }
         }
         

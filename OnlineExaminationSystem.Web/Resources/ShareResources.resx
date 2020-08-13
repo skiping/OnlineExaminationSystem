@@ -123,8 +123,20 @@
   <data name="An unexpected error has occurred, please try again." xml:space="preserve">
     <value>系统出错，请重试！</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>答案</value>
+  </data>
+  <data name="Answer Note" xml:space="preserve">
+    <value>注: 多个项以|分隔</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
+  </data>
+  <data name="Choice" xml:space="preserve">
+    <value>选择题</value>
+  </data>
+  <data name="Choice Count" xml:space="preserve">
+    <value>选择题数量</value>
   </data>
   <data name="Close All Tabs" xml:space="preserve">
     <value>关闭全部选项卡</value>
@@ -141,20 +153,47 @@
   <data name="Description" xml:space="preserve">
     <value>描述</value>
   </data>
+  <data name="Difficulty" xml:space="preserve">
+    <value>难度</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>编辑</value>
   </data>
   <data name="Examination Management" xml:space="preserve">
     <value>考试管理</value>
   </data>
+  <data name="Examination Time" xml:space="preserve">
+    <value>考试时长</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>退出</value>
+  </data>
+  <data name="Fields Required" xml:space="preserve">
+    <value>请完成所有项的输入</value>
+  </data>
+  <data name="Fill" xml:space="preserve">
+    <value>填空题</value>
+  </data>
+  <data name="Fill Count" xml:space="preserve">
+    <value>填空题数量</value>
+  </data>
+  <data name="Fill Note" xml:space="preserve">
+    <value>注：填空题空格用（）表示</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>首页</value>
   </data>
+  <data name="Judgment" xml:space="preserve">
+    <value>判断题</value>
+  </data>
+  <data name="Judgment Count" xml:space="preserve">
+    <value>判断题数量</value>
+  </data>
   <data name="Lock Current Tab" xml:space="preserve">
     <value>定位当前选项卡</value>
+  </data>
+  <data name="Mannual Add" xml:space="preserve">
+    <value>手动添加</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>序号</value>
@@ -162,8 +201,23 @@
   <data name="Online Examination" xml:space="preserve">
     <value>在线考试</value>
   </data>
+  <data name="Option A" xml:space="preserve">
+    <value>选项A </value>
+  </data>
+  <data name="Option B" xml:space="preserve">
+    <value>选项B</value>
+  </data>
+  <data name="Option C" xml:space="preserve">
+    <value>选项C</value>
+  </data>
+  <data name="Option D" xml:space="preserve">
+    <value>选项D</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>关闭操作</value>
+  </data>
+  <data name="Paper" xml:space="preserve">
+    <value>试卷</value>
   </data>
   <data name="Paper List" xml:space="preserve">
     <value>试卷列表</value>
@@ -174,11 +228,41 @@
   <data name="Please select one record" xml:space="preserve">
     <value>请选择一条记录！</value>
   </data>
+  <data name="Q&amp;A" xml:space="preserve">
+    <value>问答题</value>
+  </data>
+  <data name="Q&amp;A Count" xml:space="preserve">
+    <value>问答题数量</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>题目</value>
+  </data>
+  <data name="Question Content" xml:space="preserve">
+    <value>题干</value>
+  </data>
   <data name="Question List" xml:space="preserve">
-    <value>题目列表</value>
+    <value>题库</value>
   </data>
   <data name="Questions Management" xml:space="preserve">
     <value>题库管理</value>
+  </data>
+  <data name="QuestionType" xml:space="preserve">
+    <value>题型</value>
+  </data>
+  <data name="Rule Add" xml:space="preserve">
+    <value>根据规则自动添加</value>
+  </data>
+  <data name="Rule List" xml:space="preserve">
+    <value>试卷规则列表</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>分数</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="Select Rule" xml:space="preserve">
+    <value>选择试卷规则</value>
   </data>
   <data name="Subject" xml:space="preserve">
     <value>课程</value>

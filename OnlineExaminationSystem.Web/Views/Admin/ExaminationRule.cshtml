@@ -4,7 +4,7 @@
 @inject IStringLocalizer<ShareResources> ShareLocalizer
 
 @{
-    ViewData["Title"] = ShareLocalizer["Subject List"];
+    ViewData["Title"] = "Rule List";
     Layout = "~/Views/Shared/_Layout_Content.cshtml";
 }
 
@@ -17,7 +17,7 @@
 <div class="wrapper wrapper-content" id="app">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>@ShareLocalizer["Subject List"]</h5>
+            <h5>@ShareLocalizer["Paper Rules"]</h5>
             <div class="ibox-tools">
                 <a class="collapse-link">
                     <i class="fa fa-chevron-up"></i>
@@ -26,6 +26,12 @@
         </div>
         <div class="ibox-content">
             <div class="form-group">
+                <input type="text" class="form-control input-sm"
+                       style="width: 20%; display: inline-block" v-model="keyword" />
+                <button type="button" class="btn btn-default " @@click="getData()">
+                    <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                </button>
+
                 <button type="button" class="btn btn-primary " @@click="addSubject()">
                     <i class="fa fa-plus"></i>&nbsp;@ShareLocalizer["Add"]
                 </button>
@@ -44,8 +50,13 @@
                             <th></th>
                             <th>@ShareLocalizer["No"]</th>
                             <th>@ShareLocalizer["Title"]</th>
-                            <th>@ShareLocalizer["Description"]</th>
-                            <th>@ShareLocalizer["Create Time"]</th>
+                            <th>@ShareLocalizer["Subject"]</th>
+                            <th>@ShareLocalizer["Examination Time"]</th>
+                            <th>@ShareLocalizer["Score"]</th>
+                            <th>@ShareLocalizer["Choice Count"]</th>
+                            <th>@ShareLocalizer["Fill Count"]</th>
+                            <th>@ShareLocalizer["Judgment Count"]</th>
+                            <th>@ShareLocalizer["Q&A Count"]</th>
                             <th>@ShareLocalizer["Update Time"]</th>
                         </tr>
                     </thead>
@@ -54,8 +65,13 @@
                             <td><input type="checkbox" v-model="item.checked" /></td>
                             <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
                             <td>{{item.Title}}</td>
-                            <td>{{item.Description}}</td>
-                            <td>{{item.CreateTime | dateFormat}}</td>
+                            <td>{{item.Subject}}</td>
+                            <td>{{item.Time}} mins</td>
+                            <td>{{item.Score}}</td>
+                            <td>{{item.ChoiceCount}}</td>
+                            <td>{{item.FillCount}}</td>
+                            <td>{{item.JudgmentCount}}</td>
+                            <td>{{item.SubjectiveCount}}</td>
                             <td>{{item.UpdateTime | dateFormat}}</td>
                         </tr>
                     </tbody>
@@ -66,7 +82,7 @@
 
             <window-modal ref="addWin" :width="'600'">
                 <template slot="header">
-                    {{editType}}@ShareLocalizer["Subject"]
+                    {{editType}}@ShareLocalizer["Paper Rules"]
                 </template>
                 <template slot="body">
                     <div class="form-horizontal">
@@ -77,15 +93,53 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Description"]:</label>
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Subject"]:</label>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input-sm" v-model="model.Description" />
+                                <select class="form-control input-sm" v-model="model.SubjectId">
+                                    <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Score"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Score" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Examination Time"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Time" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Choice Count"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.ChoiceCount" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Fill Count"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.FillCount" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Judgment Count"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.JudgmentCount" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Q&A Count"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.SubjectiveCount" />
                             </div>
                         </div>
                     </div>
                 </template>
                 <template slot="footer">
-                    <button class="btn btn-success" @@click="submitSubject()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-success" @@click="submitRule()">@ShareLocalizer["Submit"]</button>
                     <button class="btn btn-default" @@click="closeWin()">@ShareLocalizer["Cancel"]</button>
                 </template>
             </window-modal>
@@ -98,6 +152,7 @@
         el: '#app',
         data: {
             tableData: [],
+            subjects: [],
 
             pagerOpt: {
                 pageSize: 10,
@@ -107,20 +162,22 @@
 
             model: {
                 Id: 0,
-                Title: "",
-                Description: ""
+                SubjectId: 0
             },
+
+            keyword: "",
 
             editType: '@ShareLocalizer["Add"]',
             backup: ""
         },
         mounted() {
             this.getData();
+            this.getSubjects();
         },
         methods: {
             getData() {
-                var params = `pageNo=${this.pagerOpt.page}&pageSize=${this.pagerOpt.pageSize}`
-                _fetch("/Admin/GetSubjects?" + params, "GET").then(res => {
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`
+                _fetch("/Admin/GetExaminationRules?" + params, "GET").then(res => {
                     if (res.Status = true) {
 
                         res.Data.Result.filter(x => {
@@ -136,6 +193,17 @@
                 });
             },
 
+            getSubjects() {
+                _fetch("/Admin/GetSubjects", "GET").then(res => {
+                    if (res.Status = true) {
+                        this.subjects = res.Data.Result;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
             addSubject() {
                 this.editType = "@ShareLocalizer["Add"]";
                 this.$refs.addWin.show();
@@ -144,21 +212,19 @@
             closeWin() {
                 this.model = {
                     Id: 0,
-                    Title: "",
-                    Description: ""
+                    SubjectId: 0
                 };
 
                 this.$refs.addWin.close();
             },
 
-            submitSubject() {
-                if (!this.model.Title || !this.model.Description) {
-                    alert('@Localizer["Title or description required"]')
+            submitRule() {
+                if (!this.validData()) {
+                    alert('@ShareLocalizer["Fields Required"]')
                     return;
                 }
 
-                var params = `id=${this.model.Id}&title=${this.model.Title}&description=${this.model.Description}`
-                _fetch(`/Admin/AddSubject?${params}`, "POST").then(res => {
+                _fetch(`/Admin/AddExaminationRule`, "POST", this.model).then(res => {
                     if (res.Status = true) {
                         alert('@ShareLocalizer["Submit Success"]');
                         this.closeWin();
@@ -168,6 +234,11 @@
                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
                     }
                 });
+            },
+
+            validData() {
+                return this.model.Title && this.model.SubjectId && this.model.Score &&
+                    this.model.Time;
             },
 
             editSubject() {
@@ -186,11 +257,7 @@
                 var item = this.tableData.find(x => x.Id == ids[0]);
                 this.editType = '@ShareLocalizer["Edit"]';
 
-                this.model = {
-                    Id: item.Id,
-                    Title: item.Title,
-                    Description: item.Description,
-                };
+                this.model = $.extend(true, {}, item);
                 this.$refs.addWin.show();
             },
 
@@ -206,7 +273,7 @@
                     return;
                 }
 
-                _fetch(`/Admin/DeleteSubject?id=${ids[0]}`, "DELETE").then(res => {
+                _fetch(`/Admin/DeleteExaminationRule?id=${ids[0]}`, "DELETE").then(res => {
                     if (res.Status = true) {
                         alert('@ShareLocalizer["Submit Success"]');
                         this.getData();

@@ -123,8 +123,20 @@
   <data name="An unexpected error has occurred, please try again." xml:space="preserve">
     <value>An unexpected error has occurred, please try again.</value>
   </data>
+  <data name="Answer" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="Answer Note" xml:space="preserve">
+    <value>Note: multiple items are separated by "|"</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Choice" xml:space="preserve">
+    <value>Choice</value>
+  </data>
+  <data name="Choice Count" xml:space="preserve">
+    <value>Choice Count</value>
   </data>
   <data name="Close All Tabs" xml:space="preserve">
     <value>Close All Tabs</value>
@@ -141,20 +153,47 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="Difficulty" xml:space="preserve">
+    <value>Difficulty</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit </value>
   </data>
   <data name="Examination Management" xml:space="preserve">
     <value>Examination</value>
   </data>
+  <data name="Examination Time" xml:space="preserve">
+    <value>Examination Time</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="Fields Required" xml:space="preserve">
+    <value>Please complete all the fields</value>
+  </data>
+  <data name="Fill" xml:space="preserve">
+    <value>Fill</value>
+  </data>
+  <data name="Fill Count" xml:space="preserve">
+    <value>Fill Count</value>
+  </data>
+  <data name="Fill Note" xml:space="preserve">
+    <value>Note: Use () to represent blank</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Judgment" xml:space="preserve">
+    <value>Judgment</value>
+  </data>
+  <data name="Judgment Count" xml:space="preserve">
+    <value>Judgment Count</value>
+  </data>
   <data name="Lock Current Tab" xml:space="preserve">
     <value>Lock Current Tab</value>
+  </data>
+  <data name="Mannual Add" xml:space="preserve">
+    <value>Mannual Add</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -162,8 +201,23 @@
   <data name="Online Examination" xml:space="preserve">
     <value>Online Examination</value>
   </data>
+  <data name="Option A" xml:space="preserve">
+    <value>Option A</value>
+  </data>
+  <data name="Option B" xml:space="preserve">
+    <value>Option B</value>
+  </data>
+  <data name="Option C" xml:space="preserve">
+    <value>Option C</value>
+  </data>
+  <data name="Option D" xml:space="preserve">
+    <value>Option D</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="Paper" xml:space="preserve">
+    <value>Paper</value>
   </data>
   <data name="Paper List" xml:space="preserve">
     <value>Paper List</value>
@@ -174,11 +228,41 @@
   <data name="Please select one record" xml:space="preserve">
     <value>Please select one record.</value>
   </data>
+  <data name="Q&amp;A" xml:space="preserve">
+    <value>Q&amp;A</value>
+  </data>
+  <data name="Q&amp;A Count" xml:space="preserve">
+    <value>Q&amp;A Count</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="Question Content" xml:space="preserve">
+    <value>Question Content</value>
+  </data>
   <data name="Question List" xml:space="preserve">
     <value>Question List</value>
   </data>
   <data name="Questions Management" xml:space="preserve">
     <value>Questions</value>
+  </data>
+  <data name="QuestionType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Rule Add" xml:space="preserve">
+    <value>Automactic Add by Rule</value>
+  </data>
+  <data name="Rule List" xml:space="preserve">
+    <value>Rule List</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Select Rule" xml:space="preserve">
+    <value>Select Rule</value>
   </data>
   <data name="Subject" xml:space="preserve">
     <value>Subject</value>

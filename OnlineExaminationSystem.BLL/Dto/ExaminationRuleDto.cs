@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnlineExaminationSystem.DAL.Entity
+namespace OnlineExaminationSystem.BLL.Dto
 {
-    public class ExaminationRule
+    public class ExaminationRuleDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public int SubjectId { get; set; }
+        public string Subject { get; set; }
         public int Time { get; set; }
         public int ChoiceCount { get; set; }
         public int FillCount { get; set; }

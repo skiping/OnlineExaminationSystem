@@ -40,6 +40,20 @@ namespace OnlineExaminationSystem.BLL.Service
             };
         }
 
+        public async Task<QueryResult<List<Subject>>> GetAllSubjects()
+        {
+            var query = _dbContext.Subjects.AsQueryable();
+
+            var total = await query.CountAsync();
+            var subjects = await query.OrderBy(x => x.Id).ToListAsync();
+
+            return new QueryResult<List<Subject>>()
+            {
+                Total = total,
+                Result = subjects
+            };
+        }
+
         public async Task<bool> DeleteSubject(int id)
         {
             var model = await _dbContext.Subjects.FirstOrDefaultAsync(x => x.Id == id);

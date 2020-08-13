@@ -1,7 +1,7 @@
 ﻿
 Vue.filter("dateFormat",
     (val, format) => {
-        format = format || "YYYY-MM-DD hh:mm:ss";
+        format = format || "YYYY-MM-DD HH:mm:ss";
         return moment(val).format(format);
 	});
 

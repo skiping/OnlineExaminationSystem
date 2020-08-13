@@ -21,6 +21,7 @@ namespace OnlineExaminationSystem.DAL
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<User_Examination> User_Examinations { get; set; }
         public DbSet<User_Examination_Answer> User_Examination_Answers { get; set; }
+        public DbSet<Question_Type> Question_Types { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +56,9 @@ namespace OnlineExaminationSystem.DAL
 
             modelBuilder.Entity<Subject>().HasKey(x => x.Id);
             modelBuilder.Entity<Subject>().Property(x => x.Title).HasMaxLength(100);
+
+            modelBuilder.Entity<Question_Type>().HasKey(x => x.Id);
+            modelBuilder.Entity<Question_Type>().Property(x => x.Type).HasMaxLength(100);
 
             modelBuilder.Entity<User>().HasData(
                 new User()
@@ -107,6 +111,28 @@ namespace OnlineExaminationSystem.DAL
                    CreateTime = DateTime.Now,
                    UpdateTime = DateTime.Now
                });
+
+            modelBuilder.Entity<Question_Type>().HasData(
+              new Question_Type()
+              {
+                  Id = 1,
+                  Type = "选择题"
+              },
+              new Question_Type()
+              {
+                  Id = 2,
+                  Type = "判断题"
+              },
+              new Question_Type()
+              {
+                  Id = 3,
+                  Type = "填空题"
+              },
+              new Question_Type()
+              {
+                  Id = 4,
+                  Type = "问答题"
+              });
         }
     }
 }
