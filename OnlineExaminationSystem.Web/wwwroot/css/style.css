@@ -5643,3 +5643,19 @@ body.fixed-sidebar.mini-navbar .navbar-static-side {
 	width: 100px;
 	height: 100px;
 }
+
+.inline-box p {
+	display: inline-block !important;
+}
+
+.question-content > p {
+	display: inline-block !important;
+}
+
+.question-content > span {
+	color: red;
+}
+
+.panel-body > ol > li {
+	margin-bottom: 15px;
+}

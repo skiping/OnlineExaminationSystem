@@ -79,37 +79,144 @@
                 <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize" @@input="pageChange()"></pagination>
             </div>
 
-            <window-modal ref="addWin" :width="'600'">
+            <window-modal ref="addWin" :width="'900'">
                 <template slot="header">
                     {{editType}}@ShareLocalizer["Paper"]
                 </template>
                 <template slot="body">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Title"]:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input-sm" v-model="model.Title" />
+                            <label class="col-sm-1 control-label">@ShareLocalizer["Title"]:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" v-model="manualModel.Title" />
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Subject"]:</label>
-                            <div class="col-sm-5">
-                                <select class="form-control input-sm" v-model="model.SubjectId">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Subject"]:</label>
+                            <div class="col-sm-3">
+                                <select class="form-control input-sm" v-model="manualModel.SubjectId">
                                     <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Score"]:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input-sm" v-model="model.Score" />
+                            <label class="col-sm-1 control-label">@ShareLocalizer["Score"]:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" v-model="manualModel.Score" />
+                            </div>
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Examination Time"]:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm" v-model="manualModel.Time" />
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-info" @@click="selectQuestion()">
+                                    @ShareLocalizer["Select Questions"]
+                                </button>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Examination Time"]:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input-sm" v-model="model.Time" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="panel panel-default space"
+                             v-if="manualModel.ChioceQuestions && manualModel.ChioceQuestions.length > 0">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@ShareLocalizer["Choice"]</h3>
                             </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li v-for="item in manualModel.ChioceQuestions">
+                                        <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
+                                        <div class="inline-box">
+                                            <input type="checkbox" name="choice-1" value="A">
+                                            A. <span v-html="item.OptionA"></span>
+                                        </div>
+                                        <div class="inline-box">
+                                            <input type="checkbox" name="choice-2" value="B">
+                                            B. <span v-html="item.OptionB"></span>
+                                        </div>
+                                        <div class="inline-box">
+                                            <input type="checkbox" name="choice-3" value="C">
+                                            C. <span v-html="item.OptionC"></span>
+                                        </div>
+                                        <div class="inline-box">
+                                            <input type="checkbox" name="choice-4" value="D">
+                                            D. <span v-html="item.OptionD"></span>
+
+                                            <button type="button" class="btn btn-danger pull-right" @@click="deleteQuestion(item)">
+                                                <i class="fa fa-remove"></i>
+                                                &nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default space"
+                             v-if="manualModel.JudgmentQuestions && manualModel.JudgmentQuestions.length > 0">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@ShareLocalizer["Judgment"]</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li v-for="item in manualModel.JudgmentQuestions">
+                                        <div class="inline-box">
+                                            <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
+                                            <input type="radio" name="judgment-1" value="T">
+                                            <span class="glyphicon glyphicon-ok" style="color: green"></span>
+                                            <input type="radio" name="judgment-1" value="F">
+                                            <span class="glyphicon glyphicon-remove" style="color: red"></span>
+
+                                            <button type="button" class="btn btn-danger pull-right" @@click="deleteQuestion(item)">
+                                                <i class="fa fa-remove"></i>
+                                                &nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default space"
+                             v-if="manualModel.FillQuestions && manualModel.FillQuestions.length > 0">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@ShareLocalizer["Fill"]</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li v-for="item in manualModel.FillQuestions" class="inline-box">
+                                        <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
+
+                                        <button type="button" class="btn btn-danger pull-right" @@click="deleteQuestion(item)">
+                                            <i class="fa fa-remove"></i>
+                                            &nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                                        </button>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default space"
+                             v-if="manualModel.SubjectiveQuestions && manualModel.SubjectiveQuestions.length > 0">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@ShareLocalizer["Q&A"]</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li v-for="item in manualModel.SubjectiveQuestions">
+                                        <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'">
+                                        </p>
+                                        <button type="button" class="btn btn-danger pull-right" @@click="deleteQuestion(item)">
+                                            <i class="fa fa-remove"></i>
+                                            &nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                                        </button>
+                                        <textarea rows="8" name="answer-1" style="width: 80%" class="form-control"></textarea>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="pull-right" style="color: red; margin-bottom: 15px;">
+                            <b>@ShareLocalizer["Score"]: {{manualScore}}</b>
                         </div>
                     </div>
                 </template>
@@ -125,19 +232,25 @@
                 </template>
                 <template slot="body">
                     <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Select Rule"]:</label>
-                            <div class="col-sm-5">
-                                <select class="form-control input-sm" v-model="model.RuleId" @@change="ruleChange()">
-                                    <option v-for="x in rules" :value="x.Id">{{x.Title}}</option>
-                                </select>
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <label class="col-sm-3 control-label">@ShareLocalizer["Select Rule"]:</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control input-sm" v-model="model.RuleId" @@change="ruleChange()">
+                                        <option v-for="x in rules" :value="x.Id">{{x.Title}}</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-3 control-label">@ShareLocalizer["Title"]:</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control input-sm" v-model="model.Title" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="col-md-4">
-                                        @ShareLocalizer["Subject"]：{{model.Rule.Subject}}
+                                        @ShareLocalizer["Subject"]：{{(model.Subject || {}).Title}}
                                     </div>
                                     <div class="col-md-4">
                                         @ShareLocalizer["Examination Time"]: {{model.Rule.Time}} mins
@@ -157,20 +270,21 @@
                                 <div class="panel-body">
                                     <ol>
                                         <li v-for="item in model.questions.ChioceQuestions">
-                                            <p v-html="item.Content"></p>
-                                            <div>
+                                            <p class="question-content"
+                                               v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
+                                            <div class="inline-box">
                                                 <input type="radio" name="choice-1" value="A">
                                                 A. <span v-html="item.OptionA"></span>
                                             </div>
-                                            <div>
+                                            <div class="inline-box">
                                                 <input type="radio" name="choice-2" value="B">
                                                 B. <span v-html="item.OptionB"></span>
                                             </div>
-                                            <div>
+                                            <div class="inline-box">
                                                 <input type="radio" name="choice-3" value="C">
                                                 C. <span v-html="item.OptionC"></span>
                                             </div>
-                                            <div>
+                                            <div class="inline-box">
                                                 <input type="radio" name="choice-4" value="D">
                                                 D. <span v-html="item.OptionD"></span>
                                             </div>
@@ -187,7 +301,13 @@
                                 <div class="panel-body">
                                     <ol>
                                         <li v-for="item in model.questions.JudgmentQuestions">
-                                            <p v-html="item.Content"></p>
+                                            <div class="inline-box">
+                                                <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
+                                                <input type="radio" name="judgment-1" value="T">
+                                                <span class="glyphicon glyphicon-ok" style="color: green"></span>
+                                                <input type="radio" name="judgment-1" value="F">
+                                                <span class="glyphicon glyphicon-remove" style="color: red"></span>
+                                            </div>
                                         </li>
                                     </ol>
                                 </div>
@@ -201,7 +321,7 @@
                                 <div class="panel-body">
                                     <ol>
                                         <li v-for="item in model.questions.FillQuestions">
-                                            <p v-html="item.Content"></p>
+                                            <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
                                         </li>
                                     </ol>
                                 </div>
@@ -215,7 +335,7 @@
                                 <div class="panel-body">
                                     <ol>
                                         <li v-for="item in model.questions.SubjectiveQuestions">
-                                            <p v-html="item.Content"></p>
+                                            <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
                                             <textarea rows="8" name="answer-1" class="form-control"></textarea>
                                         </li>
                                     </ol>
@@ -225,8 +345,78 @@
                     </div>
                 </template>
                 <template slot="footer">
-                    <button class="btn btn-success" @@click="submitPaper()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-success" @@click="submitAutoPaper()">@ShareLocalizer["Submit"]</button>
                     <button class="btn btn-default" @@click="closeAutoWin()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
+
+            <window-modal ref="questionsWin" :width="'900'" :height="'600'">
+                <template slot="header">
+                    @ShareLocalizer["Select Questions"]
+                </template>
+                <template slot="body">
+                    <div>
+                        <div class="form-group float-e-margins">
+                            @ShareLocalizer["Keyword"]：
+                            <input type="text" class="form-control input-sm"
+                                   style="width: 20%; display: inline-block" v-model="manualModel.Keyword" />
+                            @ShareLocalizer["Subject"]：
+                            <select class="form-control input-sm" style="width: 20%; display: inline-block"
+                                    v-model="manualModel.SubjectId">
+                                <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                            </select>
+                            @ShareLocalizer["QuestionType"]：
+                            <select class="form-control input-sm" v-model="manualModel.TypeId"
+                                    style="width: 20%; display: inline-block">
+                                <option value="1">@ShareLocalizer["Choice"]</option>
+                                <option value="3">@ShareLocalizer["Fill"]</option>
+                                <option value="2">@ShareLocalizer["Judgment"]</option>
+                                <option value="4">@ShareLocalizer["Q&A"]</option>
+                            </select>
+                            <button type="button" class="btn btn-primary" @@click="searchQuestion()">
+                                <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                            </button>
+                            <button type="button" class="btn btn-primary" @@click="resetSearch()">
+                                @ShareLocalizer["Reset"]
+                            </button>
+                        </div>
+
+                        <div class="jqGrid_wrapper">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>@ShareLocalizer["No"]</th>
+                                        <th>@ShareLocalizer["Subject"]</th>
+                                        <th>@ShareLocalizer["QuestionType"]</th>
+                                        <th>@ShareLocalizer["Description"]</th>
+                                        <th>@ShareLocalizer["Score"]</th>
+                                        <th>@ShareLocalizer["Difficulty"]</th>
+                                        <th>@ShareLocalizer["Update Time"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, i) in manualModel.Questions">
+                                        <td><input type="checkbox" v-model="item.checked" @@change="itemCheck(item)" /></td>
+                                        <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
+                                        <td>{{item.Subject}}</td>
+                                        <td>{{item.QuestionType}}</td>
+                                        <td>{{item.CleanContent}}</td>
+                                        <td>{{item.Score}}</td>
+                                        <td>{{item.DifficultyDegree}}</td>
+                                        <td>{{item.UpdateTime | dateFormat}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <pagination v-model="manualModel.pagerOpt.page" :total="manualModel.pagerOpt.total"
+                                        :page-size="manualModel.pagerOpt.pageSize" @@input="searchQuestion()"></pagination>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="finishQuestion()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeQuestionsWin()">@ShareLocalizer["Cancel"]</button>
                 </template>
             </window-modal>
         </div>
@@ -255,6 +445,21 @@
                 questions: {}
             },
 
+            manualModel: {
+                Id: 0,
+                SubjectId: 0,
+                pagerOpt: {
+                    pageSize: 10,
+                    page: 1,
+                    total: 0,
+                },
+                ChioceQuestions: [],
+                FillQuestions: [],
+                JudgmentQuestions: [],
+                SubjectiveQuestions: [],
+                Selected: []
+            },
+
             keyword: "",
 
             editType: '@ShareLocalizer["Add"]',
@@ -264,6 +469,12 @@
             this.getData();
             this.getSubjects();
             this.getRules();
+        },
+        computed: {
+            manualScore() {
+                return ((this.manualModel || {}).Selected || []).
+                    reduce((a, x) => a + x.Score, 0);
+            }
         },
         methods: {
             getData() {
@@ -307,6 +518,22 @@
             },
 
             addPaper() {
+                this.manualModel = {
+                    Id: 0,
+                    SubjectId: 0,
+                    Questions: [],
+                    Selected: [],
+                    ChioceQuestions: [],
+                    FillQuestions: [],
+                    JudgmentQuestions: [],
+                    SubjectiveQuestions: [],
+                    pagerOpt: {
+                        pageSize: 10,
+                        page: 1,
+                        total: 0
+                    }
+                };
+
                 this.editType = "@ShareLocalizer["Add"]";
                 this.$refs.addWin.show();
             },
@@ -318,7 +545,7 @@
 
             ruleChange() {
                 this.model.Rule = this.rules.find(x => x.Id == this.model.RuleId);
-                this.model.Subject = this.subjects.find(x => x.Id == this.model.SubjectId);
+                this.model.Subject = this.subjects.find(x => x.Id == this.model.Rule.SubjectId);
 
                 _fetch(`/Examination/GetRondomQuestionsByRule?ruleId=${this.model.RuleId}`, "GET").then(res => {
                     if (res.Status = true) {
@@ -331,34 +558,174 @@
             },
 
             closeAutoWin() {
-                this.model = {
-                    Id: 0,
-                    RuleId: 0,
-                    SubjectId: 0
-                };
-
                 this.$refs.automaticAddWin.close();
             },
 
             closeWin() {
-                this.model = {
-                    Id: 0,
-                    SubjectId: 0
-                };
-
                 this.$refs.addWin.close();
             },
 
+            selectQuestion() {
+                this.manualModel.pagerOpt = {
+                    pageSize: 10,
+                    page: 1,
+                    total: 0
+                };
+                this.manualModel.Keyword = "";
+                this.manualModel.TypeId = "0";
+
+                this.searchQuestion();
+                this.$refs.questionsWin.show();
+            },
+
+            closeQuestionsWin() {
+                this.$refs.questionsWin.close();
+            },
+
+            finishQuestion() {
+
+                this.manualModel.Selected.filter(v => {
+                    if (v.TypeId == 1 && !this.manualModel.ChioceQuestions.some(x => x.Id == v.Id)) {
+                        this.manualModel.ChioceQuestions.push(v);
+                    }
+                    if (v.TypeId == 3 && !this.manualModel.FillQuestions.some(x => x.Id == v.Id)) {
+                        this.manualModel.FillQuestions.push(v);
+                    }
+                    if (v.TypeId == 2 && !this.manualModel.JudgmentQuestions.some(x => x.Id == v.Id)) {
+                        this.manualModel.JudgmentQuestions.push(v);
+                    }
+                    if (v.TypeId == 4 && !this.manualModel.SubjectiveQuestions.some(x => x.Id == v.Id)) {
+                        this.manualModel.SubjectiveQuestions.push(v);
+                    }
+                });
+
+                this.$refs.questionsWin.close();
+            },
+
+            resetSearch() {
+                this.manualModel.SubjectId = 0;
+                this.manualModel.TypeId = 0;
+                this.manualModel.Keyword = '';
+                this.manualModel.pagerOpt.page = 1;
+                this.searchQuestion();
+            },
+
+            itemCheck(item) {
+                var index = this.manualModel.Selected.indexOf(item);
+
+                if (item.checked) {
+                    if (index < 0)
+                        this.manualModel.Selected.push(item);
+                }
+                else {
+                    this.manualModel.Selected.splice(index, 1);
+                }
+            },
+
+            deleteQuestion(item) {
+                var index = this.manualModel.Selected.indexOf(item);
+                this.manualModel.Selected.splice(index, 1);
+
+                if (item.TypeId == 1) {
+                    index = this.manualModel.ChioceQuestions.indexOf(item);
+                    this.manualModel.ChioceQuestions.splice(index, 1);
+                }
+                if (item.TypeId == 2) {
+                    index = this.manualModel.JudgmentQuestions.indexOf(item);
+                    this.manualModel.JudgmentQuestions.splice(index, 1);
+                }
+                if (item.TypeId == 3) {
+                    index = this.manualModel.FillQuestions.indexOf(item);
+                    this.manualModel.FillQuestions.splice(index, 1);
+                }
+                if (item.TypeId == 4) {
+                    index = this.manualModel.SubjectiveQuestions.indexOf(item);
+                    this.manualModel.SubjectiveQuestions.splice(index, 1);
+                }
+            },
+
+            searchQuestion() {
+                 var params = `PageNo=${this.manualModel.pagerOpt.page}&PageSize=${this.manualModel.pagerOpt.pageSize}&Keyword=${this.manualModel.Keyword}&TypeId=${this.manualModel.TypeId}&SubjectId=${this.manualModel.SubjectId}`;
+                _fetch("/Question/GetQuestions?" + params, "GET").then(res => {
+                    if (res.Status = true) {
+
+                        res.Data.Result.filter(x => {
+                            if (this.manualModel.Selected.some(y => y.Id == x.Id)) {
+                                x.checked = true;
+                            }
+                            else {
+                               x.checked = false;
+                            }
+                        });
+
+                        this.manualModel.Questions = res.Data.Result;
+                        this.manualModel.pagerOpt.total = res.Data.Total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
             submitPaper() {
-                if (!this.validData()) {
+                if (!this.manualModel.Title || !this.manualModel.SubjectId || !this.manualModel.Score
+                    || !this.manualModel.Time) {
                     alert('@ShareLocalizer["Fields Required"]')
                     return;
                 }
 
-                _fetch(`/Examination/AddExamination`, "POST", this.model).then(res => {
+                if (this.manualScore != this.manualModel.Score) {
+                    alert('@ShareLocalizer["Score not enough"]');
+                    return;
+                }
+
+                let ids = [];
+                this.manualModel.Selected.filter(x => ids.push(x.Id));
+                let model = {
+                    Id: this.manualModel.Id,
+                    Title: this.manualModel.Title,
+                    SubjectId: this.manualModel.SubjectId,
+                    Score: this.manualModel.Score,
+                    Time: this.manualModel.Time,
+                    QuestionIds: ids
+                };
+
+                _fetch(`/Examination/AddManualExamination`, "POST", model).then(res => {
                     if (res.Status = true) {
                         alert('@ShareLocalizer["Submit Success"]');
                         this.closeWin();
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            submitAutoPaper() {
+                if (!this.model.RuleId || !this.model.questions || !this.model.Title) {
+                    alert('@ShareLocalizer["Fields Required"]')
+                    return;
+                }
+
+                let ids = [];
+                this.model.questions.ChioceQuestions.filter(v => {
+                    ids.push(v.Id);
+                });
+                this.model.questions.FillQuestions.filter(v => {
+                    ids.push(v.Id);
+                });
+                this.model.questions.JudgmentQuestions.filter(v => {
+                    ids.push(v.Id);
+                });
+                this.model.questions.SubjectiveQuestions.filter(v => {
+                    ids.push(v.Id);
+                });
+
+                _fetch(`/Examination/AddAutoExamination?ruleId=${this.model.RuleId}&title=${this.model.Title}`, "POST", ids).then(res => {
+                    if (res.Status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.closeAutoWin();
                         this.getData();
                     }
                     else {
@@ -387,9 +754,39 @@
 
                 var item = this.tableData.find(x => x.Id == ids[0]);
                 this.editType = '@ShareLocalizer["Edit"]';
+                this.manualModel.Id = item.Id;
+                this.manualModel.SubjectId = item.SubjectId;
+                this.manualModel.Title = item.Title;
+                this.manualModel.Time = item.Time;
+                this.manualModel.Score = item.Score;
+                this.manualModel.ChioceQuestions = [];
+                this.manualModel.FillQuestions = [];
+                this.manualModel.JudgmentQuestions = [];
+                this.manualModel.SubjectiveQuestions = [];
+                this.manualModel.pagerOpt = {
+                    pageSize: 10,
+                    page: 1,
+                    total: 0
+                };
 
-                this.model = $.extend(true, {}, item);
-                this.$refs.addWin.show();
+                _fetch(`/Examination/GetQuestionsByExamination?examinationId=${this.manualModel.Id}`, "GET").then(res => {
+                    if (res.Status = true) {
+                        this.manualModel.ChioceQuestions = res.Data.ChioceQuestions;
+                        this.manualModel.FillQuestions = res.Data.FillQuestions;
+                        this.manualModel.JudgmentQuestions = res.Data.JudgmentQuestions;
+                        this.manualModel.SubjectiveQuestions = res.Data.SubjectiveQuestions;
+
+                        let selected = res.Data.ChioceQuestions.concat(res.Data.FillQuestions);
+                        selected = selected.concat(res.Data.JudgmentQuestions);
+                        selected = selected.concat(res.Data.SubjectiveQuestions);
+                        this.manualModel.Selected = selected;
+
+                        this.$refs.addWin.show();
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
             },
 
             deletePaper() {

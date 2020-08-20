@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace OnlineExaminationSystem.DAL.Entity
+namespace OnlineExaminationSystem.BLL.Dto
 {
-    public class User
+    public class UserDto
     {
         public int Id { get; set; }
-        public int RoleId { get; set; } //1管理员 2 教师 3 员工
+        public int RoleId { get; set; }
+        //public string RoleName { get; set; }
         public string Name { get; set; }
         public string EmployeeNo { get; set; }
         public string ProductionLine { get; set; }
@@ -24,5 +23,14 @@ namespace OnlineExaminationSystem.DAL.Entity
         public int Status { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
+
+        //public string Subject { get; set; }
+    }
+
+    public class UserQueryDto : UserDto
+    {
+        public string RoleName { get; set; }
+        public string Subject { get; set; }
+        public List<int> SubjectIds { get; set; }
     }
 }

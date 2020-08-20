@@ -26,17 +26,39 @@
         </div>
         <div class="ibox-content">
             <div class="form-group">
-                <input type="text" class="form-control input-sm" 
-                       style="width: 20%; display: inline-block" v-model="keyword" />
-                <button type="button" class="btn btn-default " @@click="getData()">
+                @ShareLocalizer["Keyword"]：
+                <input type="text" class="form-control input-sm"
+                       style="width: 10%; display: inline-block" v-model="filter.keyword" />
+                @ShareLocalizer["Subject"]：
+                <select class="form-control input-sm" style="width: 10%; display: inline-block"
+                        v-model="filter.subjectId">
+                    <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                </select>
+                @ShareLocalizer["QuestionType"]：
+                <select class="form-control input-sm" v-model="filter.typeId"
+                        style="width: 10%; display: inline-block">
+                    <option value="1">@ShareLocalizer["Choice"]</option>
+                    <option value="3">@ShareLocalizer["Fill"]</option>
+                    <option value="2">@ShareLocalizer["Judgment"]</option>
+                    <option value="4">@ShareLocalizer["Q&A"]</option>
+                </select>
+                <button type="button" class="btn btn-primary" @@click="getData()">
                     <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
                 </button>
-                
+                <button type="button" class="btn btn-primary" @@click="resetSearch()">
+
+                    <i class="fa fa-recycle"></i> @ShareLocalizer["Reset"]
+                </button>
+
+
                 <button type="button" class="btn btn-primary " @@click="addSubject()">
                     <i class="fa fa-plus"></i>&nbsp;@ShareLocalizer["Add"]
                 </button>
-                <button type="button" class="btn btn-info" @@click="editSubject()">
+                <button type="button" class="btn btn-primary" @@click="editSubject()">
                     <i class="fa fa-pencil"></i> @ShareLocalizer["Edit"]
+                </button>
+                <button type="button" class="btn btn-primary" @@click="Import()">
+                    <i class="fa fa-file-excel-o"></i> @ShareLocalizer["Import"]
                 </button>
                 <button type="button" class="btn btn-danger" @@click="deleteSubject()">
                     <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
@@ -169,6 +191,35 @@
                     <button class="btn btn-default" @@click="closeWin()">@ShareLocalizer["Cancel"]</button>
                 </template>
             </window-modal>
+
+            <window-modal ref="importWin" :width="'400'">
+                <template slot="header">
+                    @ShareLocalizer["Import Questions"]
+                </template>
+                <template slot="body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">@ShareLocalizer["Upload"]:</label>
+                            <div class="col-sm-6">
+                                <label class="control-label" style="cursor: pointer "
+                                       for="documentUpload">@ShareLocalizer["Select File"]...</label>
+                                <div class="hidden">
+                                    <file-upload ref="documentUpload"
+                                                 name="documentUpload"
+                                                 :is-multiple="false"
+                                                 :save-url="uploadUrl"
+                                                 :auto-save="true"
+                                                 @@complete="afterUploaded"></file-upload>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="submitQuestion()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeImport()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
         </div>
     </div>
 </div>
@@ -178,6 +229,7 @@
     var app = new Vue({
         el: '#app',
         data: {
+            uploadUrl: "/Question/ImportQuestion",
             tableData: [],
             subjects: [],
 
@@ -188,14 +240,19 @@
             },
 
             model: {
-                TypeId: 1,
-                SubjectId: 1,
+                TypeId: '1',
+                SubjectId: '1',
                 Content: ''
             },
 
             editType: '@ShareLocalizer["Add"]',
             backup: "",
-            keyword: "",
+          
+            filter: {
+                keyword: "",
+                subjectId: "0",
+                typeId: "0"
+            },
 
             content: null,
             editorOption: {}
@@ -206,7 +263,7 @@
         },
         methods: {
             getData() {
-                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`;
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.filter.keyword}&TypeId=${this.filter.typeId}&SubjectId=${this.filter.subjectId}`;
                 _fetch("/Question/GetQuestions?" + params, "GET").then(res => {
                     if (res.Status = true) {
 
@@ -223,6 +280,16 @@
                 });
             },
 
+            resetSearch() {              
+                this.filter = {
+                    keyword: "",
+                    subjectId: "0",
+                    typeId: "0"
+                };
+
+                this.getData();
+            },
+
             getSubjec() {
                 _fetch("/Admin/GetSubjects", "GET").then(res => {
                     if (res.Status = true) {
@@ -235,19 +302,28 @@
             },
 
             addSubject() {
-                this.model.TypeId = 1;
-                this.model.SubjectId = 1;
+                this.model.TypeId = '1';
+                this.model.SubjectId = '1';
                 this.editType = "@ShareLocalizer["Add"]";
                 this.$refs.addWin.show();
             },
 
+            Import() {
+                this.$refs.importWin.show();
+            },
+
             closeWin() {
-                this.model = {};
-                this.model.TypeId = 1;
-                this.model.SubjectId = 1;
-                this.model.Content = "";
+                this.model = {
+                    TypeId: '1',
+                    SubjectId: '1',
+                    Content: ''
+                };
 
                 this.$refs.addWin.close();
+            },
+
+            closeImport() {
+                this.$refs.importWin.close();
             },
 
             submitQuestion() {
@@ -325,7 +401,20 @@
 
             pageChange() {
                 this.getData();
-            }
+            },
+
+            afterUploaded(res) {
+                if (res.Success == true) {
+                    alert('@ShareLocalizer["Submit Success"]');
+                    this.pagerOpt.page = 1;
+                    this.getData();
+
+                    this.$refs.importWin.close();
+                }
+                else {
+                    alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                }
+            },
         }
     });
 </script>

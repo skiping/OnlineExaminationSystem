@@ -82,6 +82,24 @@
                                 <input type="text" class="form-control input-sm" v-model="model.Description" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Image"]:</label>
+                            <div class="col-sm-5">
+                                <img width="100" height="100" :src="model.ImgUrl" />
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="control-label" style="cursor: pointer "
+                                       for="documentUpload">@ShareLocalizer["Upload"]</label>
+                                <div class="hidden">
+                                    <file-upload ref="documentUpload"
+                                                 name="documentUpload"
+                                                 :is-multiple="false"
+                                                 :save-url="saveUrl"
+                                                 :auto-save="true"
+                                                 @@complete="afterUploaded"></file-upload>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </template>
                 <template slot="footer">
@@ -97,6 +115,7 @@
     var app = new Vue({
         el: '#app',
         data: {
+            saveUrl: "/Admin/ImportImg",
             tableData: [],
 
             pagerOpt: {
@@ -108,7 +127,8 @@
             model: {
                 Id: 0,
                 Title: "",
-                Description: ""
+                Description: "",
+                ImgUrl: ""
             },
 
             editType: '@ShareLocalizer["Add"]',
@@ -145,7 +165,8 @@
                 this.model = {
                     Id: 0,
                     Title: "",
-                    Description: ""
+                    Description: "",
+                    ImgUrl: ""
                 };
 
                 this.$refs.addWin.close();
@@ -157,7 +178,7 @@
                     return;
                 }
 
-                var params = `id=${this.model.Id}&title=${this.model.Title}&description=${this.model.Description}`
+                var params = `id=${this.model.Id}&title=${this.model.Title}&description=${this.model.Description}&img=${this.model.ImgUrl}`
                 _fetch(`/Admin/AddSubject?${params}`, "POST").then(res => {
                     if (res.Status = true) {
                         alert('@ShareLocalizer["Submit Success"]');
@@ -168,6 +189,15 @@
                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
                     }
                 });
+            },
+
+            afterUploaded(res) {
+                if (res.Success == true) {
+                    this.model.ImgUrl = res.FileName;
+                }
+                else {
+                     alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                }
             },
 
             editSubject() {
@@ -190,6 +220,7 @@
                     Id: item.Id,
                     Title: item.Title,
                     Description: item.Description,
+                    ImgUrl: item.ImgUrl
                 };
                 this.$refs.addWin.show();
             },

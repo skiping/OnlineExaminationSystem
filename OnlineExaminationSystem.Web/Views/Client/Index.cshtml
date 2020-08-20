@@ -1,15 +1,107 @@
-﻿
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
 @{
-    Layout = null;
+    ViewData["Title"] = ShareLocalizer["Online Examination"];
+    Layout = "~/Views/Shared/_Client_Layout.cshtml";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-</body>
-</html>
+<div class="container" id="app">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-6">@ShareLocalizer["Paper List"]</div>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." v-model="keyword">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" @@click="getData()">@ShareLocalizer["Search"]</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-3" v-for="item in tableData">
+            <div class="lm-video-grid" style=" visibility: visible;">
+                <div class="lm-video-banner video-banner1 videoPopup">
+                    <div class="video-image">
+                        <img :src="item.SubjectImg" width="262" height="200" />
+                    </div>
+                    <div class="lm-list-tag-group">
+                        <span class="lm-list-tag success" v-if="item.HasUserExam">@ShareLocalizer["Tested"]</span>
+                        <span class="lm-list-tag danger" v-else>@ShareLocalizer["Untested"]</span>
+                    </div>
+                </div>
+                <div class="video-description">
+                    <h3 style="text-align: center">{{item.Title}}</h3>
+                    <p>@ShareLocalizer["Subject"]: {{item.Subject}}</p>
+                    <p>@ShareLocalizer["Examination Time"]: {{item.Time}} mins</p>
+                    <p style="text-align: center">
+                        <button class="btn btn-danger" @@click="GoToExam(item.Id)" :disabled="item.HasUserExam">
+                            +@ShareLocalizer["Start the Exam"]
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                username: '@User.Identity.Name',
+                tableData: [],
+
+                type: "",
+                keyword: "",
+                cats: [],
+                cardVisible: false,
+             
+                pagerOpt: {
+                    pageSize: 10,
+                    page: 1,
+                    total: 0,
+                },
+            },
+            mounted() {
+                this.getData();
+            },
+            computed: {
+                totalPrice() {
+                    return (this.cats || []).
+                        reduce((a, x) => a +  (x.price || 0), 0);
+                }
+            },
+            methods: {
+                getData() {
+                    var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`
+                    _fetch("/Client/GetExaminationsByUser?" + params, "GET").then(res => {
+                        if (res.Status = true) {
+
+                            res.Data.Result.filter(x => {
+                                x.checked = false;
+                                x.isEdit = false;
+                            });
+                            this.tableData = res.Data.Result;
+                            this.pagerOpt.total = res.Data.Total;
+                        }
+                        else {
+                            alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                        }
+                    });
+                },
+
+                GoToExam(id) {
+                    window.open("/Client/Exam?id=" + id);
+                }
+            }
+        });
+</script>
+

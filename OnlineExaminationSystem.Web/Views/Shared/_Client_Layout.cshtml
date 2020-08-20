@@ -1,0 +1,127 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ShareLocalizer["Online Examination"]</title>
+
+    <link rel='stylesheet' id='font-awesome-fa-css' href='~/css/font-awesome.css' type='text/css' media='all' />
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/vue-component.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+    <script src="~/js/base.js"></script>
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/vue-component.min.js"></script>
+
+    <style>
+        body {
+            background-color: #edecea;
+        }
+
+        .fluid {
+            margin-bottom: 15px;
+            border-radius: 3px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+        }
+
+        .lm-video-grid {
+            border: 1px solid #dadada;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            overflow: hidden;
+            visibility: hidden;
+            background-color: #fff;
+        }
+
+            .lm-video-grid .lm-video-banner .video-image {
+                background-color: rgba(105, 117, 127, 0.2);
+            }
+
+            .lm-video-grid .video-description {
+                padding: 10px;
+            }
+
+            .lm-video-grid .lm-video-banner .lm-list-tag-group {
+                position: absolute;
+                top: 25px;
+                right: 25px;
+                z-index: 9;
+            }
+
+
+        .lm-list-tag.success {
+            background-color: rgba(103,194,58,.1);
+            border-color: rgba(103,194,58,.2);
+            color: #67C23A;
+        }
+
+        .lm-list-tag.danger {
+            background-color: rgba(245,108,108,.1);
+            border-color: rgba(245,108,108,.2);
+            color: #F56C6C;
+        }
+
+        .lm-list-tag {
+            background-color: rgba(64,158,255,.1);
+            padding: 0 10px;
+            height: 32px;
+            line-height: 30px;
+            font-size: 12px;
+            color: #409EFF;
+            border-radius: 4px;
+            box-sizing: border-box;
+            border: 1px solid rgba(64,158,255,.2);
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">@ShareLocalizer["Online Examination"]</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">首页</a></li>
+                    <li><a href="#">新品</a></li>
+                    <li><a href="#">促销</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @if (!string.IsNullOrEmpty(User.Identity.Name))
+                    {
+                        <li><a href="#">@User.Identity.Name</a></li>
+                        <li><a href="/Home/Logout">退出</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/Home/Login">登陆</a></li>
+                        <li><a href="/Home/Register">注册</a></li>
+                    }
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    @RenderBody()
+</body>
+</html>

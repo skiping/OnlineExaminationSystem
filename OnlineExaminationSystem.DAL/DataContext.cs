@@ -22,6 +22,7 @@ namespace OnlineExaminationSystem.DAL
         public DbSet<User_Examination> User_Examinations { get; set; }
         public DbSet<User_Examination_Answer> User_Examination_Answers { get; set; }
         public DbSet<Question_Type> Question_Types { get; set; }
+        public DbSet<User_Subject> User_Subjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,7 @@ namespace OnlineExaminationSystem.DAL
             modelBuilder.Entity<User>().Property(x => x.OJTNo).HasMaxLength(50);
             modelBuilder.Entity<User>().Property(x => x.Station).HasMaxLength(50);
             modelBuilder.Entity<User>().Property(x => x.Email).HasMaxLength(50);
+            modelBuilder.Entity<User>().Property(x => x.Sex).HasMaxLength(10);
 
             modelBuilder.Entity<Role>().HasKey(x => x.Id);
             modelBuilder.Entity<Role>().Property(x => x.Name).HasMaxLength(50);
@@ -56,9 +58,12 @@ namespace OnlineExaminationSystem.DAL
 
             modelBuilder.Entity<Subject>().HasKey(x => x.Id);
             modelBuilder.Entity<Subject>().Property(x => x.Title).HasMaxLength(100);
+            modelBuilder.Entity<Subject>().Property(x => x.ImgUrl).HasMaxLength(500);
 
             modelBuilder.Entity<Question_Type>().HasKey(x => x.Id);
             modelBuilder.Entity<Question_Type>().Property(x => x.Type).HasMaxLength(100);
+
+            modelBuilder.Entity<User_Subject>().HasKey(x => x.Id);
 
             modelBuilder.Entity<User>().HasData(
                 new User()

@@ -1,0 +1,417 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "User List";
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
+}
+
+<style>
+    .esf-window .esf-window-container .esf-window-header {
+        background: #2A3F54;
+    }
+</style>
+
+<div class="wrapper wrapper-content" id="app">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@ShareLocalizer["User List"]</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group">
+                <input type="text" class="form-control input-sm"
+                       style="width: 20%; display: inline-block" v-model="keyword" />
+                <button type="button" class="btn btn-default " @@click="getData()">
+                    <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                </button>
+
+                <button type="button" class="btn btn-primary " @@click="addUser()">
+                    <i class="fa fa-plus"></i>&nbsp;@ShareLocalizer["Add"]
+                </button>
+                <button type="button" class="btn btn-info" @@click="editUser()">
+                    <i class="fa fa-pencil"></i> @ShareLocalizer["Edit"]
+                </button>
+                <button type="button" class="btn btn-danger" @@click="deleteUser()">
+                    <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
+                </button>
+                <button type="button" class="btn btn-success" @@click="editSubject()">
+                    <i class="fa fa-pencil"></i> @ShareLocalizer["User Subjects"]
+                </button>
+            </div>
+
+            <div class="jqGrid_wrapper">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["User Name"]</th>
+                            <th>@ShareLocalizer["Role"]</th>
+                            <th>@ShareLocalizer["Subject"]</th>
+                            <th>@ShareLocalizer["Employee No"]</th>
+                            <th>@ShareLocalizer["Production Line"]</th>
+                            <th>@ShareLocalizer["Station"]</th>
+                            <th>@ShareLocalizer["OJTNo"]</th>
+                            <th>@ShareLocalizer["Email"]</th>
+                            <th>@ShareLocalizer["Phone"]</th>
+                            <th>@ShareLocalizer["Age"]</th>
+                            <th>@ShareLocalizer["Sex"]</th>
+                            <th>@ShareLocalizer["Update Time"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in tableData">
+                            <td><input type="checkbox" v-model="item.checked" /></td>
+                            <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
+                            <td>{{item.Name}}</td>
+                            <td>{{item.RoleName}}</td>
+                            <td>{{item.Subject}}</td>
+                            <td>{{item.EmployeeNo}}</td>
+                            <td>{{item.ProductionLine}}</td>
+                            <td>{{item.Station}}</td>
+                            <td>{{item.OJTNo}}</td>
+                            <td>{{item.Email}}</td>
+                            <td>{{item.Phone}}</td>
+                            <td>{{item.Age}}</td>
+                            <td>{{item.Sex}}</td>
+                            <td>{{item.UpdateTime | dateFormat}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize" @@input="pageChange()"></pagination>
+            </div>
+
+            <window-modal ref="addWin" :width="'600'">
+                <template slot="header">
+                    {{editType}}@ShareLocalizer["User"]
+                </template>
+                <template slot="body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["User Name"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Role"]:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control input-sm" v-model="model.RoleId">
+                                    <option value="1">@ShareLocalizer["Admin"]</option>
+                                    <option value="2">@ShareLocalizer["Teacher"]</option>
+                                    <option value="3">@ShareLocalizer["User"]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Employee No"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.EmployeeNo" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Production Line"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.ProductionLine" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Station"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Station" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["OJTNo"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.OJTNo" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Email"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Email" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Phone"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Phone" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Age"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Age" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Sex"]:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control input-sm" v-model="model.Sex">
+                                    <option value="男">@ShareLocalizer["Male"]</option>
+                                    <option value="女">@ShareLocalizer["Female"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="submitUser()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeWin()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
+
+            <window-modal ref="subjectWin" :width="'600'">
+                <template slot="header">
+                    @ShareLocalizer["User Subjects"]
+                </template>
+                <template slot="body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["User Name"]:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input-sm" v-model="model.Name" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@ShareLocalizer["Subject"]:</label>
+                            <div class="col-sm-5">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr> 
+                                            <th>@ShareLocalizer["Subject"]</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, i) in subjects">
+                                            <td>{{item.Title}}</td>
+                                            <td><input type="checkbox" v-model="item.checked" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template slot="footer">
+                    <button class="btn btn-success" @@click="submitSubject()">@ShareLocalizer["Submit"]</button>
+                    <button class="btn btn-default" @@click="closeEditSubject()">@ShareLocalizer["Cancel"]</button>
+                </template>
+            </window-modal>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+            subjects: [],
+
+            pagerOpt: {
+                pageSize: 10,
+                page: 1,
+                total: 0,
+            },
+
+            model: {
+                Id: 0,
+                RoleId: 0
+            },
+
+            keyword: "",
+
+            editType: '@ShareLocalizer["Add"]',
+            backup: ""
+        },
+        mounted() {
+            this.getData();
+            this.getSubjects();
+        },
+        methods: {
+            getData() {
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`
+                _fetch("/Admin/GetUsers?" + params, "GET").then(res => {
+                    if (res.Status = true) {
+
+                        res.Data.Result.filter(x => {
+                            x.checked = false;
+                            x.isEdit = false;
+                        });
+                        this.tableData = res.Data.Result;
+                        this.pagerOpt.total = res.Data.Total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            getSubjects() {
+                _fetch("/Admin/GetSubjects", "GET").then(res => {
+                    if (res.Status = true) {
+                         res.Data.Result.filter(x => {
+                            x.checked = false;
+                        });
+                        this.subjects = res.Data.Result;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            addUser() {
+                this.editType = "@ShareLocalizer["Add"]";
+                this.$refs.addWin.show();
+            },
+
+            editSubject() {
+                var ids = [];
+                this.tableData.filter(v => {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+
+                if (ids.length == 0 || ids.length > 1) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+                var item = this.tableData.find(x => x.Id == ids[0]);
+                this.model = $.extend(true, {}, item);
+                this.subjects.filter(x => {
+                    if (item.SubjectIds.indexOf(x.Id) >= 0) {
+                        x.checked = true;
+                    }
+                });
+
+                this.$refs.subjectWin.show();
+            },
+
+            submitSubject() {
+                let ids = [];
+                this.subjects.filter(x => {
+                    if (x.checked) ids.push(x.Id);
+                });
+                if (ids.length == 0) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                _fetch(`/Admin/EditUserSubjects?userId=${this.model.Id}`, "POST", ids).then(res => {
+                    if (res.Status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.closeEditSubject();
+                        this.getData();
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            closeEditSubject() {
+                 this.model = {
+                    Id: 0,
+                    RoleId: 0
+                };
+                this.subjects.filter(x => {
+                    x.checked = false;
+                });
+
+                this.$refs.subjectWin.close();
+            },
+
+            closeWin() {
+                this.model = {
+                    Id: 0,
+                    RoleId: 0
+                };
+
+                this.$refs.addWin.close();
+            },
+
+            submitUser() {
+                if (!this.validData()) {
+                    alert('@ShareLocalizer["Fields Required"]')
+                    return;
+                }
+
+                _fetch(`/Admin/AddUser`, "POST", this.model).then(res => {
+                    if (res.Status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.closeWin();
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            validData() {
+                return this.model.Name && this.model.EmployeeNo;
+            },
+
+            editUser() {
+                var ids = [];
+                this.tableData.filter(v => {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+
+                if (ids.length == 0 || ids.length > 1) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                var item = this.tableData.find(x => x.Id == ids[0]);
+                this.editType = '@ShareLocalizer["Edit"]';
+
+                this.model = $.extend(true, {}, item);
+                this.$refs.addWin.show();
+            },
+
+            deleteUser() {
+                var ids = [];
+                this.tableData.forEach(function (v) {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+                if (ids.length == 0) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                _fetch(`/Admin/DeleteUser?id=${ids[0]}`, "DELETE").then(res => {
+                    if (res.Status = true) {
+                        alert('@ShareLocalizer["Submit Success"]');
+                        this.getData();
+                    }
+                    else {
+                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            pageChange() {
+                this.getData();
+            }
+        }
+    });
+</script>
+

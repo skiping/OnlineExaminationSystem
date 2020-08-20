@@ -11,5 +11,6 @@ namespace OnlineExaminationSystem.DAL.Entity
         public string Description { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
+        public string ImgUrl { get; set; }
     }
 }

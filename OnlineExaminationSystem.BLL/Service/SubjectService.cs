@@ -62,7 +62,7 @@ namespace OnlineExaminationSystem.BLL.Service
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<int> EditSubject(int id, string title, string description)
+        public async Task<int> EditSubject(int id, string title, string description, string img)
         {
             if (id > 0)
             {
@@ -72,6 +72,7 @@ namespace OnlineExaminationSystem.BLL.Service
                 model.Title = title;
                 model.UpdateTime = DateTime.Now;
                 model.Description = description;
+                model.ImgUrl = img;
             }
             else
             {
@@ -80,7 +81,8 @@ namespace OnlineExaminationSystem.BLL.Service
                     Title = title,
                     Description = description,
                     CreateTime = DateTime.Now,
-                    UpdateTime = DateTime.Now
+                    UpdateTime = DateTime.Now,
+                    ImgUrl = img
                 };
                 _dbContext.Subjects.Add(subject);
             }
