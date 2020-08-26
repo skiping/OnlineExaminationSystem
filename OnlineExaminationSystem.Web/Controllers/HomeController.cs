@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using OnlineExaminationSystem.BLL.Service;
 using OnlineExaminationSystem.Web.Models;
+using OnlineExaminationSystem.BLL.Dto;
 
 namespace OnlineExaminationSystem.Web.Controllers
 {
@@ -28,7 +29,7 @@ namespace OnlineExaminationSystem.Web.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1, 2")]
         public IActionResult Index()
         {
             return View();
@@ -40,6 +41,11 @@ namespace OnlineExaminationSystem.Web.Controllers
         }
 
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult NoRight()
         {
             return View();
         }
@@ -72,9 +78,9 @@ namespace OnlineExaminationSystem.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser(string name, string password, string address, string phone)
+        public IActionResult Register([FromBody] UserDto dto)
         {
-            var result = _userService.Register(name, password, phone, 1);
+            var result = _userService.Register(dto);
 
             return Json(new { result = result });
         }

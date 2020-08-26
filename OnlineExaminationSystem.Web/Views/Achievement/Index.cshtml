@@ -1,0 +1,191 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
+}
+
+<div class="wrapper wrapper-content" id="app">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@ShareLocalizer["Statistics"]</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group">
+                @ShareLocalizer["Subject"]：
+                <select class="form-control input-sm" style="width: 10%; display: inline-block"
+                        v-model="subjectId" @@change="subjectChange()">
+                    <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                </select>
+                @ShareLocalizer["Examination"]：
+                <select class="form-control input-sm" style="width: 10%; display: inline-block"
+                        v-model="examinationId">
+                    <option v-for="x in examinations" :value="x.Id">{{x.Title}}</option>
+                </select>
+                <button type="button" class="btn btn-primary " @@click="getData()">
+                    <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                </button>
+            </div>
+
+            <div class="form-horizontal" style="margin-top: 65px;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Subject"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.Subject" />
+                    </div>
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Examination"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.Exmination" />
+                    </div>
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Test Nums"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.TotalNums" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Max Score"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.MaxScore" />
+                    </div>
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Min Score"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.MinScore" />
+                    </div>
+                    <label class="col-sm-2 control-label">@ShareLocalizer["Average Score"]:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control input-sm" v-model="model.AvgScore" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="jqGrid_wrapper" style="margin-top: 25px">
+                <div class="ibox-title">
+                    <h5>@ShareLocalizer["Score Section"]</h5>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>0-10</th>
+                            <th>10-20</th>
+                            <th>20-30</th>
+                            <th>30-40</th>
+                            <th>40-50</th>
+                            <th>50-60</th>
+                            <th>60-70</th>
+                            <th>70-80</th>
+                            <th>80-90</th>
+                            <th>90-100</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{(model.ScoreSection || {})["0-10"]}}</td>
+                            <td>{{(model.ScoreSection || {})["10-20"]}}</td>
+                            <td>{{(model.ScoreSection || {})["20-30"]}}</td>
+                            <td>{{(model.ScoreSection || {})["30-40"]}}</td>
+                            <td>{{(model.ScoreSection || {})["40-50"]}}</td>
+                            <td>{{(model.ScoreSection || {})["50-60"]}}</td>
+                            <td>{{(model.ScoreSection || {})["60-70"]}}</td>
+                            <td>{{(model.ScoreSection || {})["70-80"]}}</td>
+                            <td>{{(model.ScoreSection || {})["80-90"]}}</td>
+                            <td>{{(model.ScoreSection || {})["90-100"]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="jqGrid_wrapper">
+                <div class="ibox-title">
+                    <h5>@ShareLocalizer["Wrong Rate"]</h5>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["Type"]</th>
+                            <th>@ShareLocalizer["Description"]</th>
+                            <th>@ShareLocalizer["Wrong Rate"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in model.Questions">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.Type}}</td>
+                            <td>{{item.Content}}</td>
+                            <td>{{item.WrongRate | toPercent}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            model: {},
+            subjects: [],
+            examinations: [],
+
+            subjectId: 0,
+            examinationId: 0
+        },
+        mounted() {
+            this.getSubjects();
+        },
+        methods: {
+            getData() {
+                _fetch(`/Achievement/GetStatistic?examId=${this.examinationId}`, "GET").then(res => {
+                    if (res.Status = true) {
+                        this.model = res.Data;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            getSubjects() {
+                _fetch("/Admin/GetAllSubjectsByUser", "GET").then(res => {
+                    if (res.Status = true) {
+                        this.subjects = res.Data.Result;
+                        this.subjectId = this.subjects[0].Id;
+
+                        this.subjectChange();
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            subjectChange() {
+                _fetch(`/Achievement/GetExaminations?subjectId=${this.subjectId}`, "GET").then(res => {
+                    if (res.Status = true) {
+                        this.examinations = res.Data;
+                        this.examinationId = this.examinations[0].Id;
+                        this.getData();
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+
+
+

@@ -1,9 +1,10 @@
-﻿@using Microsoft.Extensions.Localization
+﻿
+@using Microsoft.Extensions.Localization
 @inject IStringLocalizer<ShareResources> ShareLocalizer
 
 @{
-    ViewData["Title"] = ShareLocalizer["Online Examination"];
-    Layout = "~/Views/Shared/_Client_Layout.cshtml";
+    ViewData["Title"] = ShareLocalizer["Preview"];
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
 }
 
 <div class="container" id="app">
@@ -11,7 +12,7 @@
         <div class="panel panel-default">
             <h2 class="text-center">{{model.Examination.Title}}</h2>
             <hr />
-            <div class="panel-body">
+            <div class="panel-body title-box">
                 <div class="col-md-3">
                     @ShareLocalizer["Subject"]：{{model.Examination.Subject}}
                 </div>
@@ -21,13 +22,10 @@
                 <div class="col-md-3">
                     @ShareLocalizer["Total Score"]: {{model.Examination.Score}}
                 </div>
-                <div class="col-md-3">
-                    @ShareLocalizer["Count Down"]: <span style="color: red">{{countDown}}</span>
-                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-12" v-if="examResult.Status == -1">
+    <div class="col-md-12">
         <div class="panel panel-default space"
              v-if="model.ChioceQuestions && model.ChioceQuestions.length > 0">
             <div class="panel-heading">
@@ -71,7 +69,7 @@
                             <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
                             <input style="margin-left: 50px" type="radio" name="judgment-1" value="对" v-model="item.Answer">
                             <span class="glyphicon glyphicon-ok" style="color: green"></span>
-                            <input style="margin-left: 15px"  type="radio" name="judgment-1" value="错" v-model="item.Answer">
+                            <input style="margin-left: 15px" type="radio" name="judgment-1" value="错" v-model="item.Answer">
                             <span class="glyphicon glyphicon-remove" style="color: red"></span>
                         </div>
                     </li>
@@ -89,7 +87,7 @@
                     <li v-for="item in model.FillQuestions">
                         <p class="question-content" v-html="item.Content + ' <span>(' + item.Score +'@ShareLocalizer["Points"])</span>'"></p>
 
-                        <input type="text" class="form-control" style="width: 50%; display: inline-block" 
+                        <input type="text" class="form-control" style="width: 50%; display: inline-block"
                                v-model="item.Answer" />
                         @ShareLocalizer["Answer Note"]
                     </li>
@@ -112,22 +110,9 @@
             </div>
         </div>
 
-        <div class="panel panel-default space">
+        <div class="panel panel-default space print-hiddle">
             <div class="panel-body text-center">
-                <button class="btn btn-success" style="width: 150px" @@click="submitPaper()">@ShareLocalizer["Submit"]</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12" v-else>
-        <div class="panel panel-default space">
-            <div class="panel-body text-center">
-                <template v-if="examResult.Status == 1">
-                    @ShareLocalizer["Exam Complete"] {{examResult.Score}}
-                </template>
-                <template v-else>
-                    @ShareLocalizer["Exam Complete without Score"]
-                </template>
+                <button class="btn btn-success" style="width: 150px" @@click="printPaper()">@ShareLocalizer["Print Papger"]</button>
             </div>
         </div>
     </div>
@@ -140,14 +125,6 @@ var app = new Vue({
         model: {
             Examination: {}
         },
-
-        isEnd:false,
-        countDown: "00m 00s",
-        countDownSecond: 0,
-
-        examResult: {
-            Status: -1
-        }
     },
     mounted() {
         this.getData();
@@ -159,10 +136,7 @@ var app = new Vue({
             _fetch("/Client/GetExamination?id=@ViewBag.Id", "GET").then(res => {
                 if (res.Status = true) {
                     res.Data.ChioceQuestions.filter(x => x.Answer = []);
-                    this.model = res.Data;
-
-                    this.countDownSecond = this.model.Examination.Time * 60;
-                    this.setEndTime();
+                    this.model = res.Data
                 }
                 else {
                     alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
@@ -170,60 +144,11 @@ var app = new Vue({
             });
         },
 
-        submitPaper() {
-            if (confirm('@ShareLocalizer["Are you sure you want to submit the test paper?"]')) {
-                let answers = [];
-                this.model.ChioceQuestions.filter(x => {
-                    let answer = x.Answer.reverse().join('');
-                    answers.push({ "QuestionId": x.Id, "Answer": answer })
-                });
-                this.model.FillQuestions.filter(x => {
-                    answers.push({ "QuestionId": x.Id, "Answer": x.Answer })
-                    });
-                this.model.JudgmentQuestions.filter(x => {
-                    answers.push({ "QuestionId": x.Id, "Answer": x.Answer })
-                    });
-                this.model.SubjectiveQuestions.filter(x => {
-                    answers.push({ "QuestionId": x.Id, "Answer": x.Answer })
-                });
-
-                _fetch(`/Client/SubmitPaper?id=@ViewBag.Id`, "POST", answers).then(res => {
-                    if (res.Status = true) {
-                        alert('@ShareLocalizer["Submit Success"]');
-
-                        this.examResult = res.Data;
-                    }
-                    else {
-                       alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
-                    }
-                });
-            }
-        },
-
-        setEndTime() {
-            var that = this;
-            var interval = setInterval(function timestampToTime() {
-                var date = that.countDownSecond; //剩余的毫秒数
-                if (date == 0) {
-                    that.isEnd = true;
-                    clearInterval(interval)
-                } else {
-                    let m = parseInt(date / 60, 10);//计算剩余的分钟
-                    if (m < 10) {
-                        m = "0" + m
-                    }
-                    let s = parseInt(date % 60, 10);//计算剩余的秒数 
-                    if (s < 10) {
-                        s = "0" + s
-                    }
-
-                    that.countDown = `${m}m ${s}s`;
-                }
-
-                that.countDownSecond --;
-            }, 1000);
+        printPaper() {
+            window.print();
         }
     }
 });
 </script>
+
 

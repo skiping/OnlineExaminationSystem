@@ -18,7 +18,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for..." v-model="keyword">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" @@click="getData()">@ShareLocalizer["Search"]</button>
+                        <button class="btn btn-success" type="button" @@click="getData()">@ShareLocalizer["Search"]</button>
                     </span>
                 </div>
             </div>
@@ -61,8 +61,6 @@
 
                 type: "",
                 keyword: "",
-                cats: [],
-                cardVisible: false,
              
                 pagerOpt: {
                     pageSize: 10,
@@ -73,22 +71,11 @@
             mounted() {
                 this.getData();
             },
-            computed: {
-                totalPrice() {
-                    return (this.cats || []).
-                        reduce((a, x) => a +  (x.price || 0), 0);
-                }
-            },
             methods: {
                 getData() {
                     var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`
                     _fetch("/Client/GetExaminationsByUser?" + params, "GET").then(res => {
                         if (res.Status = true) {
-
-                            res.Data.Result.filter(x => {
-                                x.checked = false;
-                                x.isEdit = false;
-                            });
                             this.tableData = res.Data.Result;
                             this.pagerOpt.total = res.Data.Total;
                         }

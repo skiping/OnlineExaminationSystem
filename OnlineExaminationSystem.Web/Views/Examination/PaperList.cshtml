@@ -45,6 +45,9 @@
                 <button type="button" class="btn btn-info" @@click="editPaper()">
                     <i class="fa fa-pencil"></i> @ShareLocalizer["Edit"]
                 </button>
+                <button type="button" class="btn btn-success" @@click="previewPaper()">
+                    <i class="fa fa-print"></i> @ShareLocalizer["Preview"]
+                </button>
                 <button type="button" class="btn btn-danger" @@click="deletePaper()">
                     <i class="fa fa-remove"></i>&nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
                 </button>
@@ -453,6 +456,7 @@
                     page: 1,
                     total: 0,
                 },
+                Questions:[],
                 ChioceQuestions: [],
                 FillQuestions: [],
                 JudgmentQuestions: [],
@@ -496,7 +500,7 @@
             },
 
             getSubjects() {
-                _fetch("/Admin/GetSubjects", "GET").then(res => {
+                _fetch("/Admin/GetAllSubjectsByUser", "GET").then(res => {
                     if (res.Status = true) {
                         this.subjects = res.Data.Result;
                     }
@@ -737,6 +741,22 @@
             validData() {
                 return this.model.Title && this.model.SubjectId && this.model.Score &&
                     this.model.Time;
+            },
+
+            previewPaper() {
+                var ids = [];
+                this.tableData.filter(v => {
+                    if (v.checked) {
+                        ids.push(v.Id);
+                    }
+                });
+
+                if (ids.length == 0 || ids.length > 1) {
+                    alert('@ShareLocalizer["Please select one record"]');
+                    return;
+                }
+
+                window.open(`/Examination/Preview?id=${ids[0]}`);
             },
 
             editPaper() {

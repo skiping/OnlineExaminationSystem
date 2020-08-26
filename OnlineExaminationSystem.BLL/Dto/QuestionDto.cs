@@ -29,6 +29,11 @@ namespace OnlineExaminationSystem.BLL.Dto
             DifficultyDegree = question.DifficultyDegree;
             CreateTime = question.CreateTime;
             UpdateTime = question.UpdateTime;
+
+            if (TypeId == 1 && Answer.Length > 1)
+            {
+                IsMultiple = true;
+            }
         }
 
         public int Id { get; set; }
@@ -43,6 +48,7 @@ namespace OnlineExaminationSystem.BLL.Dto
         public string OptionB { get; set; }
         public string OptionC { get; set; }
         public string OptionD { get; set; }
+        public bool IsMultiple { get; set; }
         public string Answer { get; set; }
         public int Score { get; set; }
         public int DifficultyDegree { get; set; }

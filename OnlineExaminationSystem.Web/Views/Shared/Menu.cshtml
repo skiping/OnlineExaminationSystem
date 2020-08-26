@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Extensions.Localization
+@using System.Security.Claims
 @inject IStringLocalizer<ShareResources> ShareLocalizer
 
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -16,16 +17,19 @@
             </li>
             <li>
                 <a href="#">
-                    <i class="fa fa-tv"></i>
+                    <i class="fa fa-home"></i>
                     <span class="nav-label">@ShareLocalizer["Questions Management"]</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a class="J_menuItem" href="/Admin/Subject" data-index="1">
-                            @ShareLocalizer["Subject List"]
-                        </a>
-                    </li>
+                    @if (User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value == "1")
+                    {
+                        <li>
+                            <a class="J_menuItem" href="/Admin/Subject" data-index="1">
+                                @ShareLocalizer["Subject List"]
+                            </a>
+                        </li>
+                    }
                     <li>
                         <a class="J_menuItem" href="/Question/Index" data-index="2">
                             @ShareLocalizer["Question List"]
@@ -36,37 +40,67 @@
 
             <li>
                 <a href="#">
-                    <i class="fa fa-tv"></i>
+                    <i class="fa fa-paperclip"></i>
                     <span class="nav-label">@ShareLocalizer["Examination Management"]</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a class="J_menuItem" href="/Admin/ExaminationRule" data-index="3">
-                            @ShareLocalizer["Paper Rules"]
-                        </a>
-                    </li>
+                    @if (User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value == "1")
+                    {
+                        <li>
+                            <a class="J_menuItem" href="/Admin/ExaminationRule" data-index="3">
+                                @ShareLocalizer["Paper Rules"]
+                            </a>
+                        </li>
+                    }
                     <li>
                         <a class="J_menuItem" href="/Examination/PaperList" data-index="4">
                             @ShareLocalizer["Paper List"]
+                        </a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="/Examination/MarkPaper" data-index="5">
+                            @ShareLocalizer["Mark Paper"]
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="#">
-                    <i class="fa fa-tv"></i>
+                    <i class="fa fa-trophy"></i>
+                    <span class="nav-label">@ShareLocalizer["Achievement Management"]</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a class="J_menuItem" href="/Achievement/Index" data-index="6">
+                            @ShareLocalizer["Statistics"]
+                        </a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="/Achievement/UserAchievement" data-index="7">
+                            @ShareLocalizer["User Achievement"]
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @if (User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value == "1")
+            {
+            <li>
+                <a href="#">
+                    <i class="fa fa-user"></i>
                     <span class="nav-label">@ShareLocalizer["User Management"]</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a class="J_menuItem" href="/Admin/Users" data-index="5">
+                        <a class="J_menuItem" href="/Admin/Users" data-index="8">
                             @ShareLocalizer["User List"]
                         </a>
                     </li>
                 </ul>
             </li>
+            }
         </ul>
     </div>
     <div class="sidebar-footer">

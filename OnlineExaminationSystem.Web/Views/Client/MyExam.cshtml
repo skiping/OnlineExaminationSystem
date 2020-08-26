@@ -1,0 +1,118 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "My Exam";
+    Layout = "~/Views/Shared/_Client_Layout.cshtml";
+}
+
+<div class="container" id="app">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-6">@ShareLocalizer["My Examinations"]</div>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." v-model="keyword">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="button" @@click="search()">@ShareLocalizer["Search"]</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default space">
+        <div class="panel-body text-center">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["Title"]</th>
+                            <th>@ShareLocalizer["Subject"]</th>
+                            <th>@ShareLocalizer["Time"]</th>
+                            <th>@ShareLocalizer["Score"]</th>
+                            <th>@ShareLocalizer["Rank"]</th>
+                            <th>@ShareLocalizer["Max Score"]</th>
+                            <th>@ShareLocalizer["Min Score"]</th>
+                            <th>@ShareLocalizer["Average Score"]</th>
+                            <th>@ShareLocalizer["Test Nums"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in tableData">
+                            <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
+                            <td>{{item.Title}}</td>
+                            <td>{{item.Subject}}</td>
+                            <td>{{item.TestTime | dateFormat}}</td>
+                            <td>{{item.Score}}</td>
+                            <td>{{item.Rank}}</td>
+                            <td>{{item.MaxScore}}</td>
+                            <td>{{item.MinScore}}</td>
+                            <td>{{item.AvgScore}}</td>
+                            <td>{{item.TotalNums}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize" @@input="pageChange()"></pagination>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table > tbody > tr > td {
+        text-align: left !important;
+    }
+</style>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            username: '@User.Identity.Name',
+            tableData: [],
+
+            keyword: "",
+
+            pagerOpt: {
+                pageSize: 10,
+                page: 1,
+                total: 0,
+            },
+        },
+        mounted() {
+            this.getData();
+        },
+        methods: {
+            getData() {
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}`
+                _fetch("/Client/GetExamResult?" + params, "GET").then(res => {
+                    if (res.Status = true) {
+                        this.tableData = res.Data.Result;
+                        this.pagerOpt.total = res.Data.Total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            search() {
+                this.pagerOpt.page = 1;
+                this.getData();
+            },
+
+            pageChange() {
+                this.getData();
+            },
+        }
+    });
+</script>
+
+
+

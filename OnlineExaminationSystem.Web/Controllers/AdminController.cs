@@ -58,6 +58,16 @@ namespace OnlineExaminationSystem.Web.Controllers
             return Json(new { Status = true, Data = subjects });
         }
 
+        public async Task<IActionResult> GetAllSubjectsByUser()
+        {
+            var userIdStr = User.Claims.SingleOrDefault(s => s.Type == "UserId").Value;
+            int.TryParse(userIdStr, out int userId);
+            if (userId == 0) return Json(new { Status = false });
+
+            var subjects = await _subjectService.GetAllSubjectsByUser(userId);
+            return Json(new { Status = true, Data = subjects });
+        }
+
         public async Task<IActionResult> GetAllSubjects()
         {
             var subjects = await _subjectService.GetAllSubjects();

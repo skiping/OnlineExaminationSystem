@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
     Layout = null;
 }
 
@@ -7,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册</title>
+    <title>@ShareLocalizer["Register"]</title>
     <link rel='stylesheet' id='font-awesome-fa-css' href='~/css/font-awesome.css' type='text/css' media='all' />
     <link href="~/css/bootstrap.css" rel="stylesheet">
     <script src="~/js/base.js"></script>
@@ -41,7 +45,7 @@
     }
 
     .logGet {
-        width: 368px;
+        width: 468px;
         background-color: rgba(0,0,0,0.5);
         margin: auto auto;
     }
@@ -68,14 +72,14 @@
     .logGet .logD.logDtip .p1 {
         display: inline-block;
         font-size: 28px;
-        margin-top: 30px;
+        margin-top: 10px;
         width: 86%;
     }
 
     .logGet .logD.logDtip {
         width: 86%;
         border-bottom: 1px solid #ee7700;
-        margin-bottom: 60px;
+        margin-bottom: 20px;
         margin-top: 0px;
         margin-right: auto;
         margin-left: auto;
@@ -166,116 +170,137 @@
         text-align: center;
         color: #fff !important;
     }
+
+    .input-group-addon {
+        min-width:  160px;
+    }
 </style>
 
 <body>
     <div id="wrap">
         <div class="header" id="head">
             <div class="title">
-                @*<a href="http://aigcapital.com.au">
-                        <img src="http://aigcapital.com.au/aig/wp-content/uploads/2018/11/aig_white-e1542768358189.png">
-                    </a>*@
+                @ShareLocalizer["Online Examination System"]
             </div>
         </div>
 
         <div class="container">
             <div class="row" style="min-height: 80vh">
-                <div class="col-md-7">
-                    <div class="slogan">
-                        <i>
-                            <span style="color: rgb(208, 157, 80)">欢迎</span> <br />
-                            <span style="padding-left:50px;color: rgb(208, 157, 80)">光临</span><br />
-                            <span style="padding-left: 100px; color: rgb(208, 157, 80) ">请在</span>右侧注册
-                        </i>
-                    </div>
-                </div>
-                <div class="col-md-5 login-container">
+                <div class="login-container">
                     <div class="logGet">
                         <!-- 头部提示信息 -->
                         <div class="logD logDtip" style="color: #f9f9f9">
-                            <p class="p1">注册新用户</p>
+                            <p class="p1">@ShareLocalizer["Register"]</p>
                         </div>
 
-                        <div style="width: 368px; padding:0 26px 30px 26px;border-radius: 0 !important;">
+                        <div style="width: 468px; padding:0 26px 30px 26px;border-radius: 0 !important;">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon login-box">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    @ShareLocalizer["User Name"]
                                 </span>
-                                <input class="form-control login-box" placeholder="用户名" autofocus v-model="userName">
+                                <input class="form-control login-box" placeholder="@ShareLocalizer["User Name"]" autofocus v-model="userName">
                             </div>
-                            <div class="input-group input-group-lg" style="margin-top: 30px">
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
                                 <span class="input-group-addon login-box">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    @ShareLocalizer["Role"]
+                                </span>
+                                <select class="form-control login-box"  v-model="roleId">
+                                    <option value="2">@ShareLocalizer["Teacher"]</option>
+                                    <option value="3">@ShareLocalizer["User"]</option>
+                                </select>
+                            </div>
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
+                                <span class="input-group-addon login-box">
+                                    @ShareLocalizer["Employee No"]
                                 </span>
                                 <input class="form-control login-box"
-                                      v-model="nickName" placeholder="昵称">
+                                       v-model="employeeNo" placeholder="@ShareLocalizer["Employee No"]">
                             </div>
-                            <div class="input-group input-group-lg" style="margin-top: 30px">
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
                                 <span class="input-group-addon login-box">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    @ShareLocalizer["Password"]
                                 </span>
                                 <input type="password" class="form-control login-box"
-                                       v-model="password" placeholder="密码">
+                                       v-model="password" placeholder="@ShareLocalizer["Password"]">
                             </div>
-                            <div class="input-group input-group-lg" style="margin-top: 30px">
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
                                 <span class="input-group-addon login-box">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    @ShareLocalizer["Production Line"]
                                 </span>
                                 <input class="form-control login-box"
-                                       v-model="address" placeholder="地址">
+                                       v-model="productionLine" placeholder="@ShareLocalizer["Production Line"]">
                             </div>
-                            <div class="input-group input-group-lg" style="margin-top: 30px">
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
                                 <span class="input-group-addon login-box">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    @ShareLocalizer["Station"]
                                 </span>
                                 <input class="form-control login-box"
-                                      v-model="phone" placeholder="手机号">
+                                       v-model="station" placeholder="@ShareLocalizer["Station"]">
+                            </div>
+                            <div class="input-group input-group-lg" style="margin-top: 10px">
+                                <span class="input-group-addon login-box">
+                                    @ShareLocalizer["OJT No"]
+                                </span>
+                                <input class="form-control login-box"
+                                       v-model="OJTNo" placeholder="@ShareLocalizer["OJT No"]">
                             </div>
                         </div>
 
 
                         <div class="logC">
-                            <input type="button" value="注册" @@click="login()" />
+                            <input type="button" value="@ShareLocalizer["Register"]" @@click="login()" />
                         </div>
 
-                        <div class="register"><a href="/Home/Login" style="color: #fff">登录</a></div>
+                        <div class="register"><a href="/Home/Login" style="color: #fff">@ShareLocalizer["Login"]</a></div>
                     </div>
                 </div>
             </div>
         </div>
+
+        @await Html.PartialAsync("_Partial_Language")
     </div>
 
     <script>
         var app = new Vue({
             el: "#wrap",
-            data:{
+            data: {
                 userName: '',
                 password: '',
-                nickName: '',
-                address: '',
-                phone: ''
+                employeeNo: '',
+                productionLine: '',
+                station: '',
+                OJTNo: '',
+                roleId: 0,
             },
             methods: {
                 login() {
 
-                    if (!this.userName || !this.password || !this.nickName || !this.address || !this.phone) {
-                        alert("请完成用户名和密码的输入！");
+                    if (!this.userName || !this.password || !this.employeeNo || !this.productionLine
+                        || !this.station || !this.OJTNo || !this.roleId) {
+                         alert('@ShareLocalizer["Fields Required"]')
                         return;
                     }
 
-                    var params = `name=${this.userName}&password=${this.password}&nickName=${this.nickName}` + 
-                                `&address=${this.address}&phone=${this.phone}`;
-                    _fetch("/Home/AddUser?" + params, "POST").then(res => {
+                    let model = {
+                        Name: this.userName,
+                        RoleId: this.roleId,
+                        EmployeeNo: this.employeeNo,
+                        Password: this.password,
+                        ProductionLine: this.productionLine,
+                        Station: this.station,
+                        OJTNo: this.OJTNo
+                    };
+
+                    _fetch("/Home/Register", "POST", model).then(res => {
                         if (res.result == true) {
-                            alert('注册成功!');       
-                            location.href = "/Home/Login";          
+                             alert('@ShareLocalizer["Submit Success"]');
+                            location.href = "/Home/Login";
                         }
                         else {
-                            alert("用户名或密码错误！");
+                            alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
                         }
                     });
-
-                 }
+                }
             }
         });
     </script>

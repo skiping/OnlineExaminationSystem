@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Achievement Management" xml:space="preserve">
+    <value>成绩管理</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>增加</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="Age" xml:space="preserve">
     <value>年龄</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>所有</value>
   </data>
   <data name="An unexpected error has occurred, please try again." xml:space="preserve">
     <value>系统出错，请重试！</value>
@@ -137,6 +143,12 @@
   </data>
   <data name="Are you sure you want to submit the test paper?" xml:space="preserve">
     <value>你确认要提交试卷吗？</value>
+  </data>
+  <data name="Auto Marked" xml:space="preserve">
+    <value>已自动批改</value>
+  </data>
+  <data name="Average Score" xml:space="preserve">
+    <value>平均分</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
@@ -152,6 +164,12 @@
   </data>
   <data name="Close Other Tabs" xml:space="preserve">
     <value>关闭其他选项卡</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>正确</value>
+  </data>
+  <data name="Correct Answer" xml:space="preserve">
+    <value>正确答案</value>
   </data>
   <data name="Count Down" xml:space="preserve">
     <value>倒计时</value>
@@ -176,6 +194,15 @@
   </data>
   <data name="Employee No" xml:space="preserve">
     <value>工号</value>
+  </data>
+  <data name="Exam Complete" xml:space="preserve">
+    <value>考试结束，您的成绩为：</value>
+  </data>
+  <data name="Exam Complete without Score" xml:space="preserve">
+    <value>考试已结束，请等待考官批改试卷</value>
+  </data>
+  <data name="Examination" xml:space="preserve">
+    <value>考试</value>
   </data>
   <data name="Examination Management" xml:space="preserve">
     <value>考试管理</value>
@@ -225,20 +252,50 @@
   <data name="Lock Current Tab" xml:space="preserve">
     <value>定位当前选项卡</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
   <data name="Male" xml:space="preserve">
     <value>男</value>
   </data>
   <data name="Mannual Add" xml:space="preserve">
     <value>手动添加</value>
   </data>
+  <data name="Mark Paper" xml:space="preserve">
+    <value>批改试卷</value>
+  </data>
+  <data name="Marked" xml:space="preserve">
+    <value>已批改</value>
+  </data>
+  <data name="Marked All" xml:space="preserve">
+    <value>请批改完所有题目</value>
+  </data>
+  <data name="Max Score" xml:space="preserve">
+    <value>最高分</value>
+  </data>
+  <data name="Min Score" xml:space="preserve">
+    <value>最低分</value>
+  </data>
+  <data name="MultipleChoice" xml:space="preserve">
+    <value>多选题</value>
+  </data>
+  <data name="My Examinations" xml:space="preserve">
+    <value>我的考试</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>序号</value>
+  </data>
+  <data name="OJT No" xml:space="preserve">
+    <value>OJT号</value>
   </data>
   <data name="OJTNo" xml:space="preserve">
     <value>OJT号</value>
   </data>
   <data name="Online Examination" xml:space="preserve">
     <value>在线考试</value>
+  </data>
+  <data name="Online Examination System" xml:space="preserve">
+    <value>在线考试系统</value>
   </data>
   <data name="Option A" xml:space="preserve">
     <value>选项A </value>
@@ -264,6 +321,9 @@
   <data name="Paper Rules" xml:space="preserve">
     <value>试卷规则</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
   <data name="Phone" xml:space="preserve">
     <value>电话</value>
   </data>
@@ -272,6 +332,12 @@
   </data>
   <data name="Points" xml:space="preserve">
     <value>分</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="Print Papger" xml:space="preserve">
+    <value>打印考卷</value>
   </data>
   <data name="Production Line" xml:space="preserve">
     <value>产品线</value>
@@ -297,6 +363,12 @@
   <data name="QuestionType" xml:space="preserve">
     <value>题型</value>
   </data>
+  <data name="Rank" xml:space="preserve">
+    <value>排名</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>注册</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>重置条件</value>
   </data>
@@ -314,6 +386,9 @@
   </data>
   <data name="Score not enough" xml:space="preserve">
     <value>所选题目的总分数不够</value>
+  </data>
+  <data name="Score Section" xml:space="preserve">
+    <value>分段人数</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>搜索</value>
@@ -339,6 +414,12 @@
   <data name="Station" xml:space="preserve">
     <value>工站</value>
   </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>成绩统计</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
   <data name="Subject" xml:space="preserve">
     <value>科目</value>
   </data>
@@ -354,14 +435,29 @@
   <data name="Teacher" xml:space="preserve">
     <value>教师</value>
   </data>
+  <data name="Test Nums" xml:space="preserve">
+    <value>总人数</value>
+  </data>
+  <data name="Test Time" xml:space="preserve">
+    <value>考试时间</value>
+  </data>
   <data name="Tested" xml:space="preserve">
     <value>已考试</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>时间</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>名称</value>
   </data>
+  <data name="To" xml:space="preserve">
+    <value>光临</value>
+  </data>
   <data name="Total Score" xml:space="preserve">
     <value>总分</value>
+  </data>
+  <data name="Unmarked" xml:space="preserve">
+    <value>未批改</value>
   </data>
   <data name="Untested" xml:space="preserve">
     <value>未考试</value>
@@ -375,6 +471,12 @@
   <data name="User" xml:space="preserve">
     <value>用户</value>
   </data>
+  <data name="User Achievement" xml:space="preserve">
+    <value>用户成绩</value>
+  </data>
+  <data name="User Answer" xml:space="preserve">
+    <value>用户答案</value>
+  </data>
   <data name="User List" xml:space="preserve">
     <value>用户列表</value>
   </data>
@@ -384,7 +486,28 @@
   <data name="User Name" xml:space="preserve">
     <value>用户名</value>
   </data>
+  <data name="User name or password invalid" xml:space="preserve">
+    <value>用户名或密码错误！</value>
+  </data>
+  <data name="User name or password required" xml:space="preserve">
+    <value>请完成用户名和密码的输入！</value>
+  </data>
   <data name="User Subjects" xml:space="preserve">
     <value>用户科目</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>欢迎</value>
+  </data>
+  <data name="Wrong" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Wrong Rate" xml:space="preserve">
+    <value>错误率</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>学年</value>
   </data>
 </root>

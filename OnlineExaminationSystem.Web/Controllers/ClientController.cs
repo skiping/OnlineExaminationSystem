@@ -37,6 +37,11 @@ namespace OnlineExaminationSystem.Web.Controllers
             return View();
         }
 
+        public IActionResult MyExam()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> GetExaminationsByUser(FilterModel filter)
         {
             var userIdStr = User.Claims.SingleOrDefault(s => s.Type == "UserId").Value;
@@ -61,6 +66,16 @@ namespace OnlineExaminationSystem.Web.Controllers
             if (userId == 0) return Json(new { Status = false });
 
             var data = await _examinationService.AddUserExam(userId, id, answers);
+            return Json(new { Status = true, Data = data });
+        }
+
+        public async Task<IActionResult> GetExamResult(FilterModel filter)
+        {
+            var userIdStr = User.Claims.SingleOrDefault(s => s.Type == "UserId").Value;
+            int.TryParse(userIdStr, out int userId);
+            if (userId == 0) return Json(new { Status = false });
+
+            var data = await _examinationService.GetExamResult(filter, userId);
             return Json(new { Status = true, Data = data });
         }
     }

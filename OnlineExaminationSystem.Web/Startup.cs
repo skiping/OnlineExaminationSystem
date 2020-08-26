@@ -54,7 +54,7 @@ namespace OnlineExaminationSystem.Web
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(options => { options.LoginPath = "/Home/Login"; options.AccessDeniedPath = "/NoRight.cshtml"; });
+                    .AddCookie(options => { options.LoginPath = "/Home/Login"; options.AccessDeniedPath = "/Home/NoRight"; });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson(options =>
@@ -71,6 +71,7 @@ namespace OnlineExaminationSystem.Web
             services.AddScoped<QuestionService>();
             services.AddScoped<ExaminationRuleService>();
             services.AddScoped<ExaminationService>();
+            services.AddScoped<AchievementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

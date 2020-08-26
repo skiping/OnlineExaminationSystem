@@ -14,7 +14,9 @@
     <link href="~/css/vue-component.min.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet">
     <script src="~/js/base.js"></script>
+    <script src="~/js/moment.js"></script>
     <script src="~/js/vue.js"></script>
+    <script src="~/js/vue-filter.js"></script>
     <script src="~/js/jquery.js"></script>
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/vue-component.min.js"></script>
@@ -102,22 +104,25 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页</a></li>
-                    <li><a href="#">新品</a></li>
-                    <li><a href="#">促销</a></li>
+                    <li class="active"><a href="/Client/Index">@ShareLocalizer["Home"]</a></li>
+                    <li><a href="/Client/MyExam">@ShareLocalizer["My Examinations"]</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     @if (!string.IsNullOrEmpty(User.Identity.Name))
                     {
                         <li><a href="#">@User.Identity.Name</a></li>
-                        <li><a href="/Home/Logout">退出</a></li>
+                        <li><a href="/Home/Logout">@ShareLocalizer["Exit"]</a></li>
                     }
                     else
                     {
-                        <li><a href="/Home/Login">登陆</a></li>
-                        <li><a href="/Home/Register">注册</a></li>
+                        <li><a href="/Home/Login">@ShareLocalizer["Login"]</a></li>
+                        <li><a href="/Home/Register">@ShareLocalizer["Register"]</a></li>
                     }
+
+                    <li>
+                        @await Html.PartialAsync("_Partial_Language")
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

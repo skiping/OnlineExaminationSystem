@@ -13,6 +13,6 @@ namespace OnlineExaminationSystem.BLL.Dto
         public int SubjectId { get; set; }
         public int TypeId { get; set; }
         public int UserId { get; set; }
-          
+        public int Year { get; set; }  
     }
 }

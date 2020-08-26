@@ -6,6 +6,7 @@ using OnlineExaminationSystem.BLL.Dto;
 using OnlineExaminationSystem.DAL;
 using OnlineExaminationSystem.DAL.Entity;
 using System;
+using OnlineExaminationSystem.Utility;
 
 namespace OnlineExaminationSystem.BLL.Service
 {
@@ -43,6 +44,30 @@ namespace OnlineExaminationSystem.BLL.Service
         public async Task<QueryResult<List<Subject>>> GetAllSubjects()
         {
             var query = _dbContext.Subjects.AsQueryable();
+
+            var total = await query.CountAsync();
+            var subjects = await query.OrderBy(x => x.Id).ToListAsync();
+
+            return new QueryResult<List<Subject>>()
+            {
+                Total = total,
+                Result = subjects
+            };
+        }
+
+        public async Task<QueryResult<List<Subject>>> GetAllSubjectsByUser(int userId)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user.RoleId == (int)UserRole.Admin)
+            {
+                return await GetAllSubjects();
+            }
+
+            var query = (from a in _dbContext.Subjects
+                         join b in _dbContext.User_Subjects
+                         on a.Id equals b.SubjectId
+                         where b.UserId == userId
+                         select a);
 
             var total = await query.CountAsync();
             var subjects = await query.OrderBy(x => x.Id).ToListAsync();

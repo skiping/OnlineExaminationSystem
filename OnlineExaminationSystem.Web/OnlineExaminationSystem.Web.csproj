@@ -9,7 +9,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\NoRight.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Resources\ShareResources.en-US.resx" />
+    <None Include="Views\Home\NoRight.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

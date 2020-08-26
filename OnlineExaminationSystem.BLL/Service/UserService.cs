@@ -46,14 +46,17 @@ namespace OnlineExaminationSystem.BLL.Service
             }
         }
 
-        public bool Register(string username, string password, string phone, int roleId)
+        public bool Register(UserDto dto)
         {
             var user = new User()
             {
-                Name = username,
-                RoleId = roleId,
-                Password = Encrypt.MD5Encrypt(password),
-                Phone = phone,
+                Name = dto.Name,
+                RoleId = dto.RoleId,
+                Password = Encrypt.MD5Encrypt(dto.Password),
+                EmployeeNo = dto.EmployeeNo,
+                ProductionLine = dto.ProductionLine,
+                Station = dto.Station,
+                OJTNo = dto.OJTNo,
                 CreateTime = DateTime.Now
             };
             _dbContext.Users.Add(user);

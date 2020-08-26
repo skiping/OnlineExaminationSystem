@@ -1,0 +1,149 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = "User Achievement";
+    Layout = "~/Views/Shared/_Layout_Content.cshtml";
+}
+
+
+<style>
+    .esf-window .esf-window-container .esf-window-header {
+        background: #2A3F54;
+    }
+</style>
+
+<div class="wrapper wrapper-content" id="app">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@ShareLocalizer["User Achievement"]</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="form-group">
+                @ShareLocalizer["Keyword"]：
+                <input type="text" class="form-control input-sm"
+                       style="width: 10%; display: inline-block" v-model="keyword" />
+                @ShareLocalizer["Subject"]：
+                <select class="form-control input-sm" style="width: 10%; display: inline-block"
+                        v-model="subjectId">
+                    <option value="0">All</option>
+                    <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
+                </select>
+                @ShareLocalizer["Year"]：
+                <select class="form-control input-sm" style="width: 10%; display: inline-block"
+                        v-model="year">
+                    <option value="0">All</option>
+                    <option v-for="x in years" :value="x">{{x}}</option>
+                </select>
+                <button type="button" class="btn btn-primary " @@click="getData()">
+                    <i class="fa fa-search"></i>&nbsp;@ShareLocalizer["Search"]
+                </button>
+            </div>
+
+            <div class="jqGrid_wrapper">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@ShareLocalizer["No"]</th>
+                            <th>@ShareLocalizer["Title"]</th>
+                            <th>@ShareLocalizer["Subject"]</th>
+                            <th>@ShareLocalizer["User Name"]</th>
+                            <th>@ShareLocalizer["Employee No"]</th>
+                            <th>@ShareLocalizer["Score"]</th>
+                            <th>@ShareLocalizer["Test Time"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in tableData">
+                            <td><input type="checkbox" v-model="item.checked" /></td>
+                            <td>{{(pagerOpt.page - 1) * pagerOpt.pageSize + i + 1}}</td>
+                            <td>{{item.Examination}}</td>
+                            <td>{{item.Subject}}</td>
+                            <td>{{item.UserName}}</td>
+                            <td>{{item.EmployeeNo}}</td>
+                            <td>{{item.Score}}</td>
+                            <td>{{item.TestTime | dateFormat}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pagination v-model="pagerOpt.page" :total="pagerOpt.total" :page-size="pagerOpt.pageSize"
+                            @@input="pageChange()"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tableData: [],
+            subjects: [],
+            years: [],
+
+            pagerOpt: {
+                pageSize: 10,
+                page: 1,
+                total: 0,
+            },
+
+            keyword: "",
+            subjectId: 0,
+            year: 0,
+        },
+        mounted() {
+            this.getData();
+            this.getSubjects(); 
+
+            const currentYear = (new Date()).getFullYear();
+            for (let i = 2018; i <= currentYear; i++) {
+                this.years.push(i);
+            }
+        },
+        methods: {
+            getData() {
+                var params = `PageNo=${this.pagerOpt.page}&PageSize=${this.pagerOpt.pageSize}&Keyword=${this.keyword}&SubjectId=${this.subjectId}&Year=${this.year}`
+                _fetch("/Achievement/GetExaminationsByUser?" + params, "GET").then(res => {
+                    if (res.Status = true) {
+                        this.tableData = res.Data.Result;
+                        this.pagerOpt.total = res.Data.Total;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            getSubjects() {
+                _fetch("/Admin/GetAllSubjectsByUser", "GET").then(res => {
+                    if (res.Status = true) {
+                        this.subjects = res.Data.Result;
+                    }
+                    else {
+                        alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');
+                    }
+                });
+            },
+
+            pageChange() {
+                this.getData();
+            },
+
+            search() {
+                this.pagerOpt.page = 1;
+                this.getData();
+            }
+        }
+    });
+</script>
+
+

@@ -22,6 +22,17 @@ namespace OnlineExaminationSystem.Web.Controllers
             return View();
         }
 
+        public IActionResult MarkPaper()
+        {
+            return View();
+        }
+
+        public IActionResult Preview(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
         public async Task<IActionResult> GetExaminations(FilterModel filter)
         {
             var data = await _examinationService.GetExaminations(filter);
@@ -85,6 +96,24 @@ namespace OnlineExaminationSystem.Web.Controllers
         {
             var data = await _examinationService.GetQuestionsByExamination(examinationId);
             return Json(new { Status = true, Data = data });
+        }
+
+        public async Task<IActionResult> GetExamResult(FilterModel filter)
+        {
+            var data = await _examinationService.GetExamResult(filter);
+            return Json(new { Status = true, Data = data });
+        }
+
+        public async Task<IActionResult> GetPaperAndAnswer(int userExamId)
+        {
+            var data = await _examinationService.GetPaperAndAnswer(userExamId);
+            return Json(new { Status = true, Data = data });
+        }
+
+        public async Task<IActionResult> MarkPaperAnswer([FromBody] MarkPaperDto dto)
+        {
+            var data = await _examinationService.MarkPaper(dto);
+            return Json(new { Status = data });
         }
     }
 }

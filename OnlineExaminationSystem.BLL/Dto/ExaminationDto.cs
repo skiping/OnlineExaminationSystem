@@ -25,9 +25,9 @@ namespace OnlineExaminationSystem.BLL.Dto
     {
         public int ExaminationId { get; set; }
         public ExaminationDto Examination { get; set; }
-        public List<Question> ChioceQuestions { get; set; }
-        public List<Question> FillQuestions { get; set; }
-        public List<Question> JudgmentQuestions { get; set; }
-        public List<Question> SubjectiveQuestions { get; set; }
+        public List<QuestionDto> ChioceQuestions { get; set; }
+        public List<QuestionDto> FillQuestions { get; set; }
+        public List<QuestionDto> JudgmentQuestions { get; set; }
+        public List<QuestionDto> SubjectiveQuestions { get; set; }
     }
 }

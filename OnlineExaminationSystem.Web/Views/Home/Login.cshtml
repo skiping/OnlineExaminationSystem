@@ -248,11 +248,11 @@
                     var params = `name=${this.userName}&password=${this.password}&type=2`;
                     _fetch("/Home/Login?" + params, "POST").then(res => {
                         if (res.result == true) {
-                            if (res.role == 1) {
-                                location.href = "/Home/Index";
-                            }
-                            else {
+                            if (res.role == 3) {
                                 location.href = "/Client/Index";
+                            }
+                            else {                               
+                                location.href = "/Home/Index";
                             }
                         }
                         else {
