@@ -11,6 +11,7 @@ using OnlineExaminationSystem.BLL.Service;
 
 namespace OnlineExaminationSystem.Web.Controllers
 {
+    [Authorize(Roles = "1, 2")]
     public class QuestionController : Controller
     {
         private readonly QuestionService _service;

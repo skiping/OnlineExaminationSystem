@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystem.BLL.Dto;
 using OnlineExaminationSystem.BLL.Service;
@@ -17,16 +18,19 @@ namespace OnlineExaminationSystem.Web.Controllers
             _examinationService = examinationService;
         }
 
+        [Authorize(Roles = "1, 2")]
         public IActionResult PaperList()
         {
             return View();
         }
 
+        [Authorize(Roles = "1, 2")]
         public IActionResult MarkPaper()
         {
             return View();
         }
 
+        [Authorize(Roles = "1, 2")]
         public IActionResult Preview(int id)
         {
             ViewBag.Id = id;
