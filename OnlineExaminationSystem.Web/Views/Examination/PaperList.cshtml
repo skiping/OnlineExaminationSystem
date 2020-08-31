@@ -139,7 +139,7 @@
                                             <input type="checkbox" name="choice-3" value="C">
                                             C. <span v-html="item.OptionC"></span>
                                         </div>
-                                        <div class="inline-box">
+                                        <div class="inline-box" v-if="item.OptionD">
                                             <input type="checkbox" name="choice-4" value="D">
                                             D. <span v-html="item.OptionD"></span>
 
@@ -287,7 +287,7 @@
                                                 <input type="radio" name="choice-3" value="C">
                                                 C. <span v-html="item.OptionC"></span>
                                             </div>
-                                            <div class="inline-box">
+                                            <div class="inline-box" v-if="item.OptionD">
                                                 <input type="radio" name="choice-4" value="D">
                                                 D. <span v-html="item.OptionD"></span>
                                             </div>

@@ -129,7 +129,7 @@
                                     <input type="checkbox" name="choice-3" value="C">
                                     C. <span v-html="item.Question.OptionC"></span>
                                 </div>
-                                <div class="inline-box">
+                                <div class="inline-box" v-if="item.Question.OptionD">
                                     <input type="checkbox" name="choice-4" value="D">
                                     D. <span v-html="item.Question.OptionD"></span>                                  
                                 </div>
