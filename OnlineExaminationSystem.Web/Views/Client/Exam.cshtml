@@ -54,6 +54,14 @@
                             <input type="checkbox" name="choice-4" value="D" v-model="item.Answer">
                             D. <span v-html="item.OptionD"></span>
                         </div>
+                        <div class="inline-box" v-if="item.OptionE">
+                            <input type="checkbox" name="choice-5" value="E" v-model="item.Answer">
+                            D. <span v-html="item.OptionE"></span>
+                        </div>
+                        <div class="inline-box" v-if="item.OptionF">
+                            <input type="checkbox" name="choice-6" value="F" v-model="item.Answer">
+                            D. <span v-html="item.OptionF"></span>
+                        </div>
                     </li>
                 </ol>
             </div>
@@ -174,7 +182,7 @@ var app = new Vue({
             if (confirm('@ShareLocalizer["Are you sure you want to submit the test paper?"]')) {
                 let answers = [];
                 this.model.ChioceQuestions.filter(x => {
-                    let answer = x.Answer.reverse().join('');
+                    let answer = x.Answer.sort().join('');
                     answers.push({ "QuestionId": x.Id, "Answer": answer })
                 });
                 this.model.FillQuestions.filter(x => {

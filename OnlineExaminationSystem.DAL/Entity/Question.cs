@@ -17,7 +17,10 @@ namespace OnlineExaminationSystem.DAL.Entity
         public string OptionB { get; set; }
         public string OptionC { get; set; }
         public string OptionD { get; set; }
+        public string OptionE { get; set; }
+        public string OptionF { get; set; }
         public string Answer { get; set; }
+        public string ImgUrl { get; set; }
         public int Score { get; set; }
         public int DifficultyDegree { get; set; }
         public DateTime CreateTime { get; set; }

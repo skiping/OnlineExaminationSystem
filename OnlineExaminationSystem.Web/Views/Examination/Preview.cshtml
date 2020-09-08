@@ -52,6 +52,14 @@
                             <input type="checkbox" name="choice-4" value="D" v-model="item.Answer">
                             D. <span v-html="item.OptionD"></span>
                         </div>
+                        <div class="inline-box" v-if="item.OptionE">
+                            <input type="checkbox" name="choice-5" value="E" v-model="item.Answer">
+                            E. <span v-html="item.OptionE"></span>
+                        </div>
+                        <div class="inline-box" v-if="item.OptionF">
+                            <input type="checkbox" name="choice-6" value="F" v-model="item.Answer">
+                            F. <span v-html="item.OptionF"></span>
+                        </div>
                     </li>
                 </ol>
             </div>

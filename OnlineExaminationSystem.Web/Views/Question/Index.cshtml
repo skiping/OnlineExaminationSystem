@@ -167,11 +167,43 @@
                                 <div class="col-sm-9">
                                     <quill-editor v-model="model.OptionC" :options="editorOption" />
                                 </div>
+                                <div class="col-sm-1" v-if="!model.showD">
+                                    <span class="fa fa-plus" @@click="model.showD = true"
+                                          style="font-size:17px; color: green; margin-left: 10px; cursor: pointer"></span>
+                                </div> 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" v-if="model.showD">
                                 <label class="col-sm-2 control-label">@ShareLocalizer["Option D"]:</label>
                                 <div class="col-sm-9">
                                     <quill-editor v-model="model.OptionD" :options="editorOption" />
+                                </div>
+                                <div class="col-sm-1" v-if="!model.showE">
+                                    <span class="fa fa-remove" @@click="model.showD = false"
+                                          style="font-size:17px; color: red;cursor: pointer"></span>
+                                    <span class="fa fa-plus" @@click="model.showE = true"
+                                          style="font-size:17px; color: green; margin-left: 10px;cursor: pointer"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-if="model.showE">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option E"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionE" :options="editorOption" />
+                                </div>
+                                <div class="col-sm-1" v-if="!model.showF">
+                                    <span class="fa fa-remove" @@click="model.showE = false"
+                                          style="font-size:17px; color: red;cursor: pointer"></span>
+                                    <span class="fa fa-plus" @@click="model.showF = true"
+                                          style="font-size:17px; color: green; margin-left: 10px;cursor: pointer"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" v-if="model.showF">
+                                <label class="col-sm-2 control-label">@ShareLocalizer["Option F"]:</label>
+                                <div class="col-sm-9">
+                                    <quill-editor v-model="model.OptionF" :options="editorOption" />
+                                </div>
+                                <div class="col-sm-1">
+                                    <span class="fa fa-remove" @@click="model.showF = false"
+                                          style="font-size:17px; color: red;cursor: pointer"></span>
                                 </div>
                             </div>
                         </template>
@@ -242,7 +274,10 @@
             model: {
                 TypeId: '1',
                 SubjectId: '1',
-                Content: ''
+                Content: '',
+                showD: true,
+                showF: false,
+                showE: false,
             },
 
             editType: '@ShareLocalizer["Add"]',
@@ -316,7 +351,10 @@
                 this.model = {
                     TypeId: '1',
                     SubjectId: '1',
-                    Content: ''
+                    Content: '',
+                    showD: true,
+                    showF: false,
+                    showE: false
                 };
 
                 this.$refs.addWin.close();
@@ -335,7 +373,7 @@
                 _fetch(`/Question/AddQuestion`, "POST", this.model).then(res => {
                     if (res.status = true) {
                         alert('@ShareLocalizer["Submit Success"]');
-                        this.closeWin();
+                        this.clearWin();
                         this.getData();
                     }
                     else {
@@ -344,11 +382,26 @@
                 });
             },
 
+            clearWin() {
+                this.model = {
+                    TypeId: '1',
+                    SubjectId: '1',
+                    Content: '',
+                    showD: true,
+                    showF: false,
+                    showE: false
+                };
+            },
+
             validData() {
                 if (this.model.TypeId == 1) {
                     return this.model.TypeId && this.model.SubjectId && this.model.Content && this.model.Score &&
                         this.model.DifficultyDegree && this.model.OptionA && this.model.OptionB &&
                         this.model.OptionC && this.model.Answer;
+                }
+                else if (this.model.TypeId == 4) {
+                    return this.model.TypeId && this.model.SubjectId && this.model.Content && this.model.Score &&
+                        this.model.DifficultyDegree;
                 }
                 else {
                      return this.model.TypeId && this.model.SubjectId && this.model.Content && this.model.Score &&
@@ -371,8 +424,28 @@
 
                 var item = this.tableData.find(x => x.Id == ids[0]);
                 this.editType = '@ShareLocalizer["Edit"]';
+                if (item.OptionD) {
+                    item.showD = true;
+                }
+                else {
+                    item.showD = false;
+                }
+                if (item.OptionE) {
+                    item.showE = true;
+                }
+                else {
+                    item.showE = false;
+                }
+                if (item.OptionF) {
+                    item.showF = true;
+                }
+                else {
+                    item.showF = false;
+                }
 
                 this.model = $.extend(true, {}, item);
+                
+
                 this.$refs.addWin.show();
             },
 

@@ -13,6 +13,7 @@ namespace OnlineExaminationSystem.BLL.Dto
         public int SubjectId { get; set; }
         public string Subject { get; set; }
         public DateTime TestTime { get; set; }
+        public DateTime UpdateTime { get; set; }
         public int Status { get; set; }
         public int Score { get; set; }
         public double AvgScore { get; set; }

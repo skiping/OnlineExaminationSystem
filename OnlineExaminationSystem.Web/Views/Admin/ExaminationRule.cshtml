@@ -52,7 +52,6 @@
                             <th>@ShareLocalizer["Title"]</th>
                             <th>@ShareLocalizer["Subject"]</th>
                             <th>@ShareLocalizer["Examination Time"]</th>
-                            <th>@ShareLocalizer["Score"]</th>
                             <th>@ShareLocalizer["Choice Count"]</th>
                             <th>@ShareLocalizer["Fill Count"]</th>
                             <th>@ShareLocalizer["Judgment Count"]</th>
@@ -67,7 +66,6 @@
                             <td>{{item.Title}}</td>
                             <td>{{item.Subject}}</td>
                             <td>{{item.Time}} mins</td>
-                            <td>{{item.Score}}</td>
                             <td>{{item.ChoiceCount}}</td>
                             <td>{{item.FillCount}}</td>
                             <td>{{item.JudgmentCount}}</td>
@@ -98,12 +96,6 @@
                                 <select class="form-control input-sm" v-model="model.SubjectId">
                                     <option v-for="x in subjects" :value="x.Id">{{x.Title}}</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">@ShareLocalizer["Score"]:</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input-sm" v-model="model.Score" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -237,7 +229,7 @@
             },
 
             validData() {
-                return this.model.Title && this.model.SubjectId && this.model.Score &&
+                return this.model.Title && this.model.SubjectId &&
                     this.model.Time;
             },
 

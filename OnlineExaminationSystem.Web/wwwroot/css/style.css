@@ -5519,6 +5519,11 @@ body.fixed-sidebar.mini-navbar .navbar-static-side {
 	color: red;
 }
 
+.question-content img {
+	width: 100px !important;
+	height: 100px !important;
+}
+
 .panel-body > ol > li {
 	margin-bottom: 15px;
 }

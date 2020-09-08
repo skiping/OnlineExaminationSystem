@@ -42,7 +42,8 @@ namespace OnlineExaminationSystem.DAL
             modelBuilder.Entity<Role>().Property(x => x.Description).HasMaxLength(500);
 
             modelBuilder.Entity<Question>().HasKey(x => x.Id);
-            modelBuilder.Entity<Question>().Property(x => x.Title).HasMaxLength(100);         
+            modelBuilder.Entity<Question>().Property(x => x.Title).HasMaxLength(100);
+            modelBuilder.Entity<Question>().Property(x => x.ImgUrl).HasMaxLength(100);
 
             modelBuilder.Entity<Examination>().HasKey(x => x.Id);
             modelBuilder.Entity<Examination>().Property(x => x.Title).HasMaxLength(100);

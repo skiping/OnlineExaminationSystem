@@ -24,11 +24,14 @@ namespace OnlineExaminationSystem.BLL.Dto
             OptionB = question.OptionB;
             OptionC = question.OptionC;
             OptionD = question.OptionD;
+            OptionE = question.OptionE;
+            OptionF = question.OptionF;
             Answer = question.Answer;
             Score = question.Score;
             DifficultyDegree = question.DifficultyDegree;
             CreateTime = question.CreateTime;
             UpdateTime = question.UpdateTime;
+            ImgUrl = question.ImgUrl;
 
             if (TypeId == 1 && Answer.Length > 1)
             {
@@ -48,11 +51,14 @@ namespace OnlineExaminationSystem.BLL.Dto
         public string OptionB { get; set; }
         public string OptionC { get; set; }
         public string OptionD { get; set; }
+        public string OptionE { get; set; }
+        public string OptionF { get; set; }
         public bool IsMultiple { get; set; }
         public string Answer { get; set; }
         public int Score { get; set; }
         public int DifficultyDegree { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
+        public string ImgUrl { get; set; }
     }
 }

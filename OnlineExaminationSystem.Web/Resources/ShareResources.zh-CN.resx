@@ -309,6 +309,12 @@
   <data name="Option D" xml:space="preserve">
     <value>选项D</value>
   </data>
+  <data name="Option E" xml:space="preserve">
+    <value>选项E</value>
+  </data>
+  <data name="Option F" xml:space="preserve">
+    <value>选项F</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>关闭操作</value>
   </data>

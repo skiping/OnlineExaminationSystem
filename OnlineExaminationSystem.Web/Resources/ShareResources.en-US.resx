@@ -309,6 +309,12 @@
   <data name="Option D" xml:space="preserve">
     <value>Option D</value>
   </data>
+  <data name="Option E" xml:space="preserve">
+    <value>Option E</value>
+  </data>
+  <data name="Option F" xml:space="preserve">
+    <value>Option F</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
   </data>

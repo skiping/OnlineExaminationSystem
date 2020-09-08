@@ -58,11 +58,14 @@ namespace OnlineExaminationSystem.BLL.Service
                             OptionB = a.OptionB,
                             OptionC = a.OptionC,
                             OptionD = a.OptionD,
+                            OptionE = a.OptionE,
+                            OptionF = a.OptionF,
                             Answer = a.Answer,
                             Score = a.Score,
                             DifficultyDegree = a.DifficultyDegree,
                             CreateTime = a.CreateTime,
-                            UpdateTime = a.UpdateTime
+                            UpdateTime = a.UpdateTime,
+                            ImgUrl = a.ImgUrl
                         };
 
             var total = await query.CountAsync();
@@ -74,6 +77,10 @@ namespace OnlineExaminationSystem.BLL.Service
 
             questions.ForEach(x => {
                 x.CleanContent = HtmlHelper.RemoveHtmlTag(x.Content);
+                if (!string.IsNullOrEmpty(x.ImgUrl))
+                {
+                    x.Content = $"{x.Content}<img src='{x.ImgUrl}' />";
+                }
             });
 
             return new QueryResult<List<QuestionDto>>()
@@ -97,11 +104,14 @@ namespace OnlineExaminationSystem.BLL.Service
                     OptionB = dto.OptionB,
                     OptionC = dto.OptionC,
                     OptionD = dto.OptionD,
+                    OptionE = dto.OptionE,
+                    OptionF = dto.OptionF,
                     Answer = dto.Answer,
                     Score = dto.Score,
                     DifficultyDegree = dto.DifficultyDegree,
                     CreateTime = DateTime.Now,
-                    UpdateTime = DateTime.Now
+                    UpdateTime = DateTime.Now,
+                    ImgUrl = ""
                 };
                 _dbContext.Questions.Add(question);
             }
@@ -115,10 +125,13 @@ namespace OnlineExaminationSystem.BLL.Service
                 question.OptionB = dto.OptionB;
                 question.OptionC = dto.OptionC;
                 question.OptionD = dto.OptionD;
+                question.OptionE = dto.OptionE;
+                question.OptionF = dto.OptionF;
                 question.Answer = dto.Answer;
                 question.Score = dto.Score;
                 question.DifficultyDegree = dto.DifficultyDegree;
                 question.UpdateTime = DateTime.Now;
+                question.ImgUrl = "";
             }
 
             return await _dbContext.SaveChangesAsync();
@@ -163,14 +176,18 @@ namespace OnlineExaminationSystem.BLL.Service
                     var subject = worksheet.Cells[i, 3].Value.ToString();
                     var subjectId = subjects.FirstOrDefault(x => x.Title == subject)?.Id ?? 0;
                     
-                    var optionA = worksheet.Cells[i, 4].Value.ToString();
-                    var optionB = worksheet.Cells[i, 5].Value.ToString();
-                    var optionC = worksheet.Cells[i, 6].Value.ToString();
-                    var optionD = worksheet.Cells[i, 7].Value.ToString();
+                    var optionA = (worksheet.Cells[i, 4].Value ?? "").ToString();
+                    var optionB = (worksheet.Cells[i, 5].Value ?? "").ToString();
+                    var optionC = (worksheet.Cells[i, 6].Value ?? "").ToString();
+                    var optionD = (worksheet.Cells[i, 7].Value ?? "").ToString();
+                    var optionE = (worksheet.Cells[i, 8].Value ?? "").ToString();
+                    var optionF = (worksheet.Cells[i, 9].Value ?? "").ToString();
 
-                    var answer = worksheet.Cells[i, 8].Value.ToString();
-                    int.TryParse(worksheet.Cells[i, 9].Value.ToString(), out int score);
-                    int.TryParse(worksheet.Cells[i, 10].Value.ToString(), out int difficult);
+                    var answer = (worksheet.Cells[i, 10].Value ?? "").ToString();
+                    int.TryParse(worksheet.Cells[i, 11].Value.ToString(), out int score);
+                    int.TryParse(worksheet.Cells[i, 12].Value.ToString(), out int difficult);
+                    var img = (worksheet.Cells[i, 13].Value ?? "").ToString();
+
 
                     var question = new Question()
                     {
@@ -181,11 +198,14 @@ namespace OnlineExaminationSystem.BLL.Service
                         OptionB = optionB,
                         OptionC = optionC,
                         OptionD = optionD,
+                        OptionE = optionE,
+                        OptionF = optionF,
                         Answer = answer,
                         Score = score,
                         DifficultyDegree = difficult,
                         CreateTime = DateTime.Now,
-                        UpdateTime = DateTime.Now
+                        UpdateTime = DateTime.Now,
+                        ImgUrl = img
                     };
                     questions.Add(question);
                 };

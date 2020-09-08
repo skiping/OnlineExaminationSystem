@@ -142,7 +142,16 @@
                                         <div class="inline-box" v-if="item.OptionD">
                                             <input type="checkbox" name="choice-4" value="D">
                                             D. <span v-html="item.OptionD"></span>
-
+                                        </div>
+                                        <div class="inline-box" v-if="item.OptionE">
+                                            <input type="checkbox" name="choice-5" value="E">
+                                            E. <span v-html="item.OptionE"></span>
+                                        </div>
+                                        <div class="inline-box" v-if="item.OptionF">
+                                            <input type="checkbox" name="choice-6" value="F">
+                                            F. <span v-html="item.OptionF"></span>                                        
+                                        </div>
+                                        <div>
                                             <button type="button" class="btn btn-danger pull-right" @@click="deleteQuestion(item)">
                                                 <i class="fa fa-remove"></i>
                                                 &nbsp;&nbsp;<span class="bold">@ShareLocalizer["Delete"]</span>
@@ -290,6 +299,14 @@
                                             <div class="inline-box" v-if="item.OptionD">
                                                 <input type="radio" name="choice-4" value="D">
                                                 D. <span v-html="item.OptionD"></span>
+                                            </div>
+                                            <div class="inline-box" v-if="item.OptionE">
+                                                <input type="radio" name="choice-5" value="E">
+                                                D. <span v-html="item.OptionE"></span>
+                                            </div>
+                                            <div class="inline-box" v-if="item.OptionF">
+                                                <input type="radio" name="choice-6" value="F">
+                                                D. <span v-html="item.OptionF"></span>
                                             </div>
                                         </li>
                                     </ol>
@@ -554,6 +571,15 @@
                 _fetch(`/Examination/GetRondomQuestionsByRule?ruleId=${this.model.RuleId}`, "GET").then(res => {
                     if (res.Status = true) {
                         this.model.questions = res.Data;
+
+                        this.model.Rule.Score = (this.model.questions.ChioceQuestions || []).
+                            reduce((a, x) => a + x.Score, 0) +
+                            (this.model.questions.FillQuestions || []).
+                                reduce((a, x) => a + x.Score, 0) +
+                            (this.model.questions.JudgmentQuestions || []).
+                                reduce((a, x) => a + x.Score, 0) +
+                            (this.model.questions.SubjectiveQuestions || []).
+                            reduce((a, x) => a + x.Score, 0);
                     }
                     else {
                         alert('@ShareLocalizer["An unexpected error has occurred, please try again."]');

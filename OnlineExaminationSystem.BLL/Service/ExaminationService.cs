@@ -252,11 +252,12 @@ namespace OnlineExaminationSystem.BLL.Service
             var rule = await _dbContext.ExaminationRules.FirstOrDefaultAsync(x => x.Id == ruleId);
             if (rule == null) return 0;
 
+            var score = await _dbContext.Questions.Where(x => questionIds.Contains(x.Id)).SumAsync(x => x.Score);
             var model = new Examination()
             {
                 Title = title,
                 SubjectId = rule.SubjectId,
-                Score = rule.Score,
+                Score = score,
                 Time = rule.Time,
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
@@ -429,7 +430,7 @@ namespace OnlineExaminationSystem.BLL.Service
 
                 if (x.TypeId != 4)
                 {
-                    var iscorrect = answer.Trim() == x.Answer.Trim();
+                    var iscorrect = answer.Trim().ToLower() == x.Answer.Trim().ToLower();
                     var user_answer = new User_Examination_Answer()
                     {
                         QuestionId = x.Id,
@@ -496,6 +497,7 @@ namespace OnlineExaminationSystem.BLL.Service
                             Status = a.Status,                          
                             Score = a.Score,
                             TestTime = a.CreateTime,
+                            UpdateTime = a.UpdateTime,
                             UserId = d.Id,
                             UserName = d.Name,
                             EmployeeNo = d.EmployeeNo
@@ -542,7 +544,8 @@ namespace OnlineExaminationSystem.BLL.Service
                             Subject = c.Title,
                             Status = a.Status,
                             Score = a.Score,
-                            TestTime = a.CreateTime
+                            TestTime = a.CreateTime,
+                            UpdateTime = a.UpdateTime
                         };
             if (!string.IsNullOrEmpty(filter.Keyword))
             {

@@ -131,7 +131,15 @@
                                 </div>
                                 <div class="inline-box" v-if="item.Question.OptionD">
                                     <input type="checkbox" name="choice-4" value="D">
-                                    D. <span v-html="item.Question.OptionD"></span>                                  
+                                    D. <span v-html="item.Question.OptionD"></span>
+                                </div>
+                                <div class="inline-box" v-if="item.Question.OptionE">
+                                    <input type="checkbox" name="choice-5" value="E">
+                                    E. <span v-html="item.Question.OptionE"></span>
+                                </div>
+                                <div class="inline-box" v-if="item.Question.OptionF">
+                                    <input type="checkbox" name="choice-6" value="F">
+                                    F. <span v-html="item.Question.OptionF"></span>
                                 </div>
                                 <div class="inline-box mark-answer">
                                     @ShareLocalizer["Correct Answer"]: {{item.Question.Answer}}
