@@ -111,7 +111,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if (!string.IsNullOrEmpty(User.Identity.Name))
                     {
-                        <li><a href="#">@User.Identity.Name</a></li>
+                        <li><a href="/Client/Profile">@User.Identity.Name</a></li>
                         <li><a href="/Home/Logout">@ShareLocalizer["Exit"]</a></li>
                     }
                     else

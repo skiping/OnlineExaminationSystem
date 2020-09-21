@@ -165,6 +165,9 @@
   <data name="Close Other Tabs" xml:space="preserve">
     <value>Close Other Tabs</value>
   </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
   <data name="Correct" xml:space="preserve">
     <value>Correct</value>
   </data>
@@ -282,6 +285,12 @@
   <data name="My Examinations" xml:space="preserve">
     <value>My Examinations</value>
   </data>
+  <data name="New Password" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="New Password Not Match" xml:space="preserve">
+    <value>New Password Not Match</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -290,6 +299,12 @@
   </data>
   <data name="OJTNo" xml:space="preserve">
     <value>OJTNo</value>
+  </data>
+  <data name="Old Password" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="Old Password invalid" xml:space="preserve">
+    <value>Old Password invalid</value>
   </data>
   <data name="Online Examination" xml:space="preserve">
     <value>Online Examination</value>
@@ -347,6 +362,9 @@
   </data>
   <data name="Production Line" xml:space="preserve">
     <value>Production Line</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="Q&amp;A" xml:space="preserve">
     <value>Q&amp;A</value>
@@ -467,6 +485,9 @@
   </data>
   <data name="Untested" xml:space="preserve">
     <value>Untested</value>
+  </data>
+  <data name="Update Password" xml:space="preserve">
+    <value>Update Password</value>
   </data>
   <data name="Update Time" xml:space="preserve">
     <value>Update Time</value>

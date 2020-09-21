@@ -32,9 +32,9 @@ namespace OnlineExaminationSystem.BLL.Service
             try
             {
                 var user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
-                if (user == null || user.Password != oldPassword)
+                if (user == null || user.Password != Encrypt.MD5Encrypt(oldPassword))
                     return false;
-                user.Password = password;
+                user.Password = Encrypt.MD5Encrypt(password);
 
                 _dbContext.SaveChanges();
 

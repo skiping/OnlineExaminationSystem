@@ -165,6 +165,9 @@
   <data name="Close Other Tabs" xml:space="preserve">
     <value>关闭其他选项卡</value>
   </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
   <data name="Correct" xml:space="preserve">
     <value>正确</value>
   </data>
@@ -282,6 +285,12 @@
   <data name="My Examinations" xml:space="preserve">
     <value>我的考试</value>
   </data>
+  <data name="New Password" xml:space="preserve">
+    <value>新密码</value>
+  </data>
+  <data name="New Password Not Match" xml:space="preserve">
+    <value>两次新密码输入不匹配</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>序号</value>
   </data>
@@ -290,6 +299,12 @@
   </data>
   <data name="OJTNo" xml:space="preserve">
     <value>OJT号</value>
+  </data>
+  <data name="Old Password" xml:space="preserve">
+    <value>旧密码</value>
+  </data>
+  <data name="Old Password invalid" xml:space="preserve">
+    <value>旧密码错误</value>
   </data>
   <data name="Online Examination" xml:space="preserve">
     <value>在线考试</value>
@@ -347,6 +362,9 @@
   </data>
   <data name="Production Line" xml:space="preserve">
     <value>产品线</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>个人信息</value>
   </data>
   <data name="Q&amp;A" xml:space="preserve">
     <value>问答题</value>
@@ -467,6 +485,9 @@
   </data>
   <data name="Untested" xml:space="preserve">
     <value>未考试</value>
+  </data>
+  <data name="Update Password" xml:space="preserve">
+    <value>修改密码</value>
   </data>
   <data name="Update Time" xml:space="preserve">
     <value>更新时间</value>

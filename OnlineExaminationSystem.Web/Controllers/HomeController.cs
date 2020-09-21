@@ -86,6 +86,17 @@ namespace OnlineExaminationSystem.Web.Controllers
         }
 
         [HttpPost]
+        public IActionResult UpdatePassword(string oldPwd, string newPwd)
+        {
+            var userIdStr = User.Claims.SingleOrDefault(s => s.Type == "UserId").Value;
+            int.TryParse(userIdStr, out int userId);
+            if (userId == 0) return Json(new { Status = false });
+
+            var result = _userService.ChangePassword(userId, oldPwd, newPwd);
+            return Json(new { Status = result });
+        }
+
+        [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
             Response.Cookies.Append(

@@ -22,6 +22,11 @@ namespace OnlineExaminationSystem.Web.Controllers
             return View();
         }
 
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Exam(int id)
         {
             var userIdStr = User.Claims.SingleOrDefault(s => s.Type == "UserId").Value;

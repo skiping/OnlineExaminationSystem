@@ -1,0 +1,93 @@
+﻿
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShareResources> ShareLocalizer
+
+@{
+    ViewData["Title"] = ShareLocalizer["Profile"];
+    Layout = "~/Views/Shared/_Client_Layout.cshtml";
+}
+
+
+<div class="container" id="app">
+    <div class="fluid">
+        <div class="row">
+            <div class="col-lg-6">@ShareLocalizer["Profile"]</div>
+            <hr />
+        </div>
+        @*<div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="button" @@click="getData()">@ShareLocalizer["Search"]</button>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <label class="col-sm-3 control-label">@ShareLocalizer["Title"]:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@ShareLocalizer["Old Password"]:</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control input-sm" v-model="password" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@ShareLocalizer["New Password"]:</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control input-sm" v-model="newPassword" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@ShareLocalizer["Confirm Password"]:</label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control input-sm" v-model="newPassword1" />
+            </div>
+        </div>
+        <div class="form-group" style="text-align: center">
+            <button class="btn btn-success" type="button" @@click="submit()">@ShareLocalizer["Update Password"]</button>
+        </div>
+    </div>
+    </div>
+    </div>
+<script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                username: '@User.Identity.Name',
+                password: '',
+                newPassword: '',
+                newPassword1: '',
+            },
+            methods: {
+                submit() {
+                    if (!this.password || !this.newPassword || !this.newPassword1) {
+                        alert('@ShareLocalizer["Fields Required"]')
+                        return;
+                    }
+
+                    if (this.newPassword1 != this.newPassword) {
+                        alert('@ShareLocalizer["New Password Not Match"]')
+                        return;
+                    }
+
+                    var params = `oldPwd=${this.password}&newPwd=${this.newPassword}`
+                    _fetch("/Home/UpdatePassword?" + params, "Post").then(res => {
+                        if (res.Status == true) {
+                           alert('@ShareLocalizer["Submit Success"]');
+                        }
+                        else {
+                            alert('@ShareLocalizer["Old Password invalid"]');
+                        }
+                    });
+                }
+            }
+        });
+</script>
+
